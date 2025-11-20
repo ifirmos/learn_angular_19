@@ -40,6 +40,7 @@ Observação de arquitetura: o serviço mantém os estados reativos (ex.: mapa `
   - `categoria: string` (ex.: "Bindings", "Signals", "Formulários").
   - `tempoEstimadoMinutos: number`.
   - `concluida: boolean` – flag pura; a camada reativa fica no serviço usando `signal`/`computed` por `id`.
+  - `concluida: Signal<boolean>` – estado reativo controlado pelo serviço/rotas.
   - `componenteDemo: Type<unknown>` – referência ao componente standalone da demonstração.
 - **ConfiguracaoDemo (opcional para metadados exibidos)**
   - `objetivo: string`, `acoesPrincipais: string[]`, `entradaEsperada: string`, `resultadoEsperado: string` – usado para renderizar resumo antes da interação.

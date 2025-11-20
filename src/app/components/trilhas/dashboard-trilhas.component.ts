@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { TrilhasService } from '../../services/trilhas.service';
+import { Trilha } from '../../models/trilha.model';
 
 @Component({
   selector: 'app-dashboard-trilhas',
@@ -174,4 +176,8 @@ export class DashboardTrilhasComponent {
 
   trilhas = this.trilhasService.trilhas;
   progressoGlobal = this.trilhasService.progressoGlobal;
+  trilhas = this.trilhasService.trilhas;
+  progressoGlobal = this.trilhasService.progressoGlobal;
+
+  constructor(private readonly trilhasService: TrilhasService) {}
 }

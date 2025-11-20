@@ -34,6 +34,16 @@ import { DemoBindingsBasicosComponent } from '../demos/demo-bindings-basicos.com
         </p-card>
         <p-card header="Código" class="card-escuro">
           <pre class="bloco-codigo"><code>{{ codigoExemplo }}</code></pre>
+          <pre class="bloco-codigo"><code>texto = signal('Angular 19');
+tamanhoFonte = signal(24);
+
+atualizarTexto(valor: string) {
+  texto.set(valor);
+}
+
+atualizarTamanho(valor: number) {
+  tamanhoFonte.set(valor);
+}</code></pre>
           <p class="nota-codigo">O template usa {{'{{ texto() }}'}} para interpolação e [style.fontSize.px] para o binding.</p>
         </p-card>
         <p-card header="Demonstração interativa" class="card-escuro">

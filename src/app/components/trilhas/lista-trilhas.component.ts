@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -100,4 +101,7 @@ export class ListaTrilhasComponent {
   private readonly trilhasService = inject(TrilhasService);
 
   trilhas = this.trilhasService.trilhas;
+  trilhas = this.trilhasService.trilhas;
+
+  constructor(private readonly trilhasService: TrilhasService) {}
 }
