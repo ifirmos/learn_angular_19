@@ -14,5 +14,6 @@ export interface Trilha {
   descricao: string;
   nivel: 'iniciante' | 'intermediario';
   licoes: Licao[];
-  progresso?: number;
+
+  progresso?: number; // usado no dashboard como progresso estimado
 }

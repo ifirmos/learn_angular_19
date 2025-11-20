@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { TrilhasService } from '../../services/trilhas.service';
 import { Trilha } from '../../models/trilha.model';
 
 @Component({
@@ -11,6 +12,25 @@ import { Trilha } from '../../models/trilha.model';
   standalone: true,
   imports: [CommonModule, RouterLink, CardModule, ButtonModule, TagModule],
   template: `
+    <section class="resumo-progresso">
+      <p-card class="card-trilha">
+        <div class="resumo-topo">
+          <div>
+            <p class="subtitulo">Acompanhamento</p>
+            <h2>Progresso global das lições</h2>
+            <p class="descricao">
+              Veja rapidamente quanto você já explorou. Conforme as lições são marcadas como concluídas, este indicador se
+              atualiza automaticamente via signals.
+            </p>
+          </div>
+          <div class="indicador-progresso">
+            <span class="valor-progresso">{{ progressoGlobal() }}%</span>
+            <p-tag value="Andamento" severity="success"></p-tag>
+          </div>
+        </div>
+      </p-card>
+    </section>
+
     <section class="cabecalho">
       <p class="subtitulo">Plataforma guiada</p>
       <h1>Trilhas para aprender Angular 19 fazendo</h1>
@@ -24,27 +44,51 @@ import { Trilha } from '../../models/trilha.model';
     </section>
 
     <section class="cards-trilhas">
-      <article *ngFor="let trilha of trilhas" class="card-wrapper">
+      @for (trilha of trilhas(); track trilha.id) {
+        <article class="card-wrapper">
         <p-card [header]="trilha.titulo" [subheader]="trilha.descricao" class="card-trilha">
           <div class="detalhes-trilha">
             <p class="nivel">
               Nível: <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'" severity="info"></p-tag>
             </p>
             <p class="licoes">{{ trilha.licoes.length }} lições</p>
-            <p class="progresso">Progresso estimado: {{ trilha.progresso }}%</p>
+            <p class="progresso">Progresso estimado: {{ trilha.progresso ?? 0 }}%</p>
           </div>
           <div class="acoes-card">
             <a pButton label="Detalhes" styleClass="p-button-outlined" [routerLink]="['/trilhas', trilha.id]"></a>
             <a pButton label="Começar" icon="pi pi-play" [routerLink]="['/licoes', trilha.licoes[0].id]"></a>
           </div>
         </p-card>
-      </article>
+        </article>
+      }
     </section>
   `,
   styles: [
     `
       :host {
         display: block;
+      }
+
+      .resumo-progresso {
+        margin-bottom: 1.25rem;
+      }
+
+      .resumo-topo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .indicador-progresso {
+        display: grid;
+        justify-items: end;
+        gap: 0.25rem;
+      }
+
+      .valor-progresso {
+        font-size: 2.25rem;
+        font-weight: 700;
       }
 
       .cabecalho {
@@ -127,60 +171,8 @@ import { Trilha } from '../../models/trilha.model';
   ],
 })
 export class DashboardTrilhasComponent {
-  trilhas: Array<Trilha & { progresso: number }> = [
-    {
-      id: 'fundamentos-ts',
-      titulo: 'Fundamentos TypeScript',
-      descricao: 'Tipos essenciais, funções puras e interfaces aplicadas ao Angular.',
-      nivel: 'iniciante',
-      progresso: 20,
-      licoes: [
-        {
-          id: 'ts-tipos-basicos',
-          titulo: 'Tipos básicos aplicados',
-          descricaoCurta: 'Entenda tipos primitivos e inferência em componentes.',
-          nivel: 'iniciante',
-          categoria: 'typescript',
-          tempoEstimadoMinutos: 12,
-          concluida: false,
-        },
-      ],
-    },
-    {
-      id: 'fundamentos-angular',
-      titulo: 'Fundamentos Angular',
-      descricao: 'Standalone components, templates claros e roteamento básico.',
-      nivel: 'iniciante',
-      progresso: 10,
-      licoes: [
-        {
-          id: 'angular-componentes',
-          titulo: 'Primeiro componente standalone',
-          descricaoCurta: 'Construa um componente simples com inputs e outputs.',
-          nivel: 'iniciante',
-          categoria: 'angular',
-          tempoEstimadoMinutos: 15,
-          concluida: false,
-        },
-      ],
-    },
-    {
-      id: 'bindings-essenciais',
-      titulo: 'Bindings e reatividade',
-      descricao: 'Interpolação, property, event e two-way binding com PrimeNG.',
-      nivel: 'intermediario',
-      progresso: 5,
-      licoes: [
-        {
-          id: 'bindings-basicos',
-          titulo: 'Bindings em ação',
-          descricaoCurta: 'Veja a UI reagindo a cada mudança de estado.',
-          nivel: 'intermediario',
-          categoria: 'bindings',
-          tempoEstimadoMinutos: 18,
-          concluida: false,
-        },
-      ],
-    },
-  ];
+  trilhas = this.trilhasService.trilhas;
+  progressoGlobal = this.trilhasService.progressoGlobal;
+
+  constructor(private readonly trilhasService: TrilhasService) {}
 }

@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { Trilha } from '../../models/trilha.model';
+import { TrilhasService } from '../../services/trilhas.service';
 
 @Component({
   selector: 'app-lista-trilhas',
@@ -16,13 +16,15 @@ import { Trilha } from '../../models/trilha.model';
         <p class="subtitulo">Explorar</p>
         <h2>Trilhas disponíveis</h2>
         <p class="descricao">
-          Selecione uma trilha para ver suas lições e iniciar a prática. Os dados abaixo são mockados para o esqueleto do app.
+          Selecione uma trilha para ver suas lições e iniciar a prática. Os dados abaixo são fornecidos por um serviço único
+          para evitar duplicação.
         </p>
       </div>
     </header>
 
     <section class="lista-trilhas">
-      <article *ngFor="let trilha of trilhas" class="item-trilha">
+      @for (trilha of trilhas(); track trilha.id) {
+        <article class="item-trilha">
         <p-card [header]="trilha.titulo" [subheader]="trilha.descricao" class="card-trilha">
           <div class="detalhes">
             <span class="nivel">
@@ -35,7 +37,8 @@ import { Trilha } from '../../models/trilha.model';
             <a pButton label="Ver trilha" icon="pi pi-arrow-right" [routerLink]="['/trilhas', trilha.id]"></a>
           </div>
         </p-card>
-      </article>
+        </article>
+      }
     </section>
   `,
   styles: [
@@ -94,57 +97,7 @@ import { Trilha } from '../../models/trilha.model';
   ],
 })
 export class ListaTrilhasComponent {
-  trilhas: Trilha[] = [
-    {
-      id: 'fundamentos-ts',
-      titulo: 'Fundamentos TypeScript',
-      descricao: 'Tipos essenciais e padrões para Angular.',
-      nivel: 'iniciante',
-      licoes: [
-        {
-          id: 'ts-tipos-basicos',
-          titulo: 'Tipos básicos aplicados',
-          descricaoCurta: 'Pratique tipos primitivos e inferência.',
-          nivel: 'iniciante',
-          categoria: 'typescript',
-          tempoEstimadoMinutos: 12,
-          concluida: false,
-        },
-      ],
-    },
-    {
-      id: 'fundamentos-angular',
-      titulo: 'Fundamentos Angular',
-      descricao: 'Standalone components e roteamento.',
-      nivel: 'iniciante',
-      licoes: [
-        {
-          id: 'angular-componentes',
-          titulo: 'Primeiro componente standalone',
-          descricaoCurta: 'Inputs, outputs e templates limpos.',
-          nivel: 'iniciante',
-          categoria: 'angular',
-          tempoEstimadoMinutos: 15,
-          concluida: false,
-        },
-      ],
-    },
-    {
-      id: 'bindings-essenciais',
-      titulo: 'Bindings e reatividade',
-      descricao: 'Interpolação, eventos e signals.',
-      nivel: 'intermediario',
-      licoes: [
-        {
-          id: 'bindings-basicos',
-          titulo: 'Bindings em ação',
-          descricaoCurta: 'Observe a UI reagir aos dados.',
-          nivel: 'intermediario',
-          categoria: 'bindings',
-          tempoEstimadoMinutos: 18,
-          concluida: false,
-        },
-      ],
-    },
-  ];
+  trilhas = this.trilhasService.trilhas;
+
+  constructor(private readonly trilhasService: TrilhasService) {}
 }
