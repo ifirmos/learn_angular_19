@@ -25,7 +25,10 @@ import { Trilha } from '../../models/trilha.model';
       <article *ngFor="let trilha of trilhas" class="item-trilha">
         <p-card [header]="trilha.titulo" [subheader]="trilha.descricao" class="card-trilha">
           <div class="detalhes">
-            <span class="nivel">Nível: <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'"></p-tag></span>
+            <span class="nivel">
+              Nível:
+              <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'" severity="info"></p-tag>
+            </span>
             <span class="quantidade-licoes">{{ trilha.licoes.length }} lições</span>
           </div>
           <div class="acoes">

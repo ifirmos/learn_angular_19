@@ -14,4 +14,5 @@ export interface Trilha {
   descricao: string;
   nivel: 'iniciante' | 'intermediario';
   licoes: Licao[];
+  progresso?: number;
 }
