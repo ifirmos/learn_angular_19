@@ -3,7 +3,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { BadgeModule } from 'primeng/badge';
-import { TrilhasService } from './services/trilhas.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +20,7 @@ import { TrilhasService } from './services/trilhas.service';
         </div>
         <div class="p-toolbar-group-end toolbar-right">
           <span class="progresso-label">Progresso geral</span>
-          <span pBadge [value]="progressoGlobal() + '%'" severity="info"></span>
+          <span pBadge value="25%" severity="info"></span>
         </div>
       </p-toolbar>
 
@@ -89,8 +88,4 @@ import { TrilhasService } from './services/trilhas.service';
     `,
   ],
 })
-export class AppShellComponent {
-  readonly progressoGlobal = this.trilhasService.progressoGlobal;
-
-  constructor(private readonly trilhasService: TrilhasService) {}
-}
+export class AppShellComponent {}
