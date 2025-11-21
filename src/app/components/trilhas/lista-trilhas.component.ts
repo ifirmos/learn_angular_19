@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -10,37 +10,7 @@ import { TrilhasService } from '../../services/trilhas.service';
   selector: 'app-lista-trilhas',
   standalone: true,
   imports: [CommonModule, RouterLink, CardModule, ButtonModule, TagModule],
-  template: `
-    <header class="cabecalho-lista">
-      <div>
-        <p class="subtitulo">Explorar</p>
-        <h2>Trilhas disponíveis</h2>
-        <p class="descricao">
-          Selecione uma trilha para ver suas lições e iniciar a prática. Os dados abaixo são fornecidos por um serviço único
-          para evitar duplicação.
-        </p>
-      </div>
-    </header>
-
-    <section class="lista-trilhas">
-      @for (trilha of trilhas(); track trilha.id) {
-        <article class="item-trilha">
-        <p-card [header]="trilha.titulo" [subheader]="trilha.descricao" class="card-trilha">
-          <div class="detalhes">
-            <span class="nivel">
-              Nível:
-              <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'" severity="info"></p-tag>
-            </span>
-            <span class="quantidade-licoes">{{ trilha.licoes.length }} lições</span>
-          </div>
-          <div class="acoes">
-            <a pButton label="Ver trilha" icon="pi pi-arrow-right" [routerLink]="['/trilhas', trilha.id]"></a>
-          </div>
-        </p-card>
-        </article>
-      }
-    </section>
-  `,
+  templateUrl: './lista-trilhas.component.html',
   styles: [
     `
       :host {
@@ -97,7 +67,7 @@ import { TrilhasService } from '../../services/trilhas.service';
   ],
 })
 export class ListaTrilhasComponent {
-  trilhas = this.trilhasService.trilhas;
+  private readonly trilhasService = inject(TrilhasService);
 
-  constructor(private readonly trilhasService: TrilhasService) {}
+  trilhas = this.trilhasService.trilhas;
 }

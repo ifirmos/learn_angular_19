@@ -11,58 +11,7 @@ import { TrilhasService } from '../../services/trilhas.service';
   selector: 'app-detalhe-trilha',
   standalone: true,
   imports: [CommonModule, RouterLink, CardModule, ButtonModule, TagModule],
-  template: `
-    @if (trilha) {
-      <section class="cabecalho">
-        <p class="subtitulo">Trilha</p>
-        <h2>{{ trilha.titulo }}</h2>
-        <p class="descricao">{{ trilha.descricao }}</p>
-      </section>
-
-      <section class="card-detalhes">
-        <p-card class="card-escuro" header="Informações gerais">
-          <div class="info-basica">
-            <span>
-              Nível:
-              <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'" severity="info"></p-tag>
-            </span>
-            <span>{{ trilha.licoes.length }} lições</span>
-            <span>Progresso estimado: {{ trilha.progresso ?? 0 }}%</span>
-          </div>
-        </p-card>
-      </section>
-
-      <section class="lista-licoes">
-        <h3>Lições desta trilha</h3>
-        <div class="grid-licoes">
-          @for (licao of trilha.licoes; track licao.id) {
-            <p-card class="card-escuro" [header]="licao.titulo">
-              <p class="descricao-licao">{{ licao.descricaoCurta }}</p>
-              <div class="meta-licao">
-                <span><strong>Nível:</strong> {{ licao.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário' }}</span>
-                <span><strong>Tempo estimado:</strong> {{ licao.tempoEstimadoMinutos }} min</span>
-                <span class="status" [class.concluida]="licao.concluida">
-                  {{ licao.concluida ? 'Concluída' : 'Pendente' }}
-                </span>
-              </div>
-              <div class="acoes-licao">
-                <a pButton label="Abrir lição" icon="pi pi-arrow-right" [routerLink]="['/licoes', licao.id]"></a>
-              </div>
-            </p-card>
-          }
-        </div>
-      </section>
-    } @else {
-      <section class="cabecalho">
-        <p class="subtitulo">Trilha</p>
-        <h2>Trilha não encontrada</h2>
-        <p class="descricao">Não localizamos a trilha solicitada. Verifique o link ou volte para a lista.</p>
-      </section>
-      <div class="acoes">
-        <a pButton label="Voltar para trilhas" styleClass="p-button-text" routerLink="/trilhas"></a>
-      </div>
-    }
-  `,
+  templateUrl: './detalhe-trilha.component.html',
   styles: [
     `
       :host {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -11,58 +11,7 @@ import { Trilha } from '../../models/trilha.model';
   selector: 'app-dashboard-trilhas',
   standalone: true,
   imports: [CommonModule, RouterLink, CardModule, ButtonModule, TagModule],
-  template: `
-    <section class="resumo-progresso">
-      <p-card class="card-trilha">
-        <div class="resumo-topo">
-          <div>
-            <p class="subtitulo">Acompanhamento</p>
-            <h2>Progresso global das lições</h2>
-            <p class="descricao">
-              Veja rapidamente quanto você já explorou. Conforme as lições são marcadas como concluídas, este indicador se
-              atualiza automaticamente via signals.
-            </p>
-          </div>
-          <div class="indicador-progresso">
-            <span class="valor-progresso">{{ progressoGlobal() }}%</span>
-            <p-tag value="Andamento" severity="success"></p-tag>
-          </div>
-        </div>
-      </p-card>
-    </section>
-
-    <section class="cabecalho">
-      <p class="subtitulo">Plataforma guiada</p>
-      <h1>Trilhas para aprender Angular 19 fazendo</h1>
-      <p class="descricao">
-        Explore trilhas curtas, com lições interativas e exemplos claros. Comece pelo dashboard ou siga para a lista completa
-        de trilhas.
-      </p>
-      <div class="acoes">
-        <a pButton label="Ver todas as trilhas" routerLink="/trilhas" icon="pi pi-arrow-right"></a>
-      </div>
-    </section>
-
-    <section class="cards-trilhas">
-      @for (trilha of trilhas(); track trilha.id) {
-        <article class="card-wrapper">
-        <p-card [header]="trilha.titulo" [subheader]="trilha.descricao" class="card-trilha">
-          <div class="detalhes-trilha">
-            <p class="nivel">
-              Nível: <p-tag [value]="trilha.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'" severity="info"></p-tag>
-            </p>
-            <p class="licoes">{{ trilha.licoes.length }} lições</p>
-            <p class="progresso">Progresso estimado: {{ trilha.progresso ?? 0 }}%</p>
-          </div>
-          <div class="acoes-card">
-            <a pButton label="Detalhes" styleClass="p-button-outlined" [routerLink]="['/trilhas', trilha.id]"></a>
-            <a pButton label="Começar" icon="pi pi-play" [routerLink]="['/licoes', trilha.licoes[0].id]"></a>
-          </div>
-        </p-card>
-        </article>
-      }
-    </section>
-  `,
+  templateUrl: './dashboard-trilhas.component.html',
   styles: [
     `
       :host {
@@ -171,8 +120,8 @@ import { Trilha } from '../../models/trilha.model';
   ],
 })
 export class DashboardTrilhasComponent {
+  private readonly trilhasService = inject(TrilhasService);
+
   trilhas = this.trilhasService.trilhas;
   progressoGlobal = this.trilhasService.progressoGlobal;
-
-  constructor(private readonly trilhasService: TrilhasService) {}
 }

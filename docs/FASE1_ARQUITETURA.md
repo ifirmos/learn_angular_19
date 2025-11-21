@@ -13,15 +13,20 @@ Plataforma web educacional, tema escuro minimalista, construída com Angular 19 
   - **PainelCodigoLicao** (tabs TS/HTML com destaque via PrimeNG CodeHighlighter ou simples formatação, sem execução inline);
   - **PainelDemoLicao** (demonstração interativa específica da lição, sempre reativa e visual).
 - **Componentes de demo por lição**: um componente por lição para manter clareza, ex.: `DemoBindingsBasicosComponent`, `DemoSignalsReatividadeComponent`, `DemoFormulariosReativosComponent`. Cada um expõe signals/computed e interações locais. Quando um template crescer, quebrar em subcomponentes como `PainelControlesDemo`, `PainelResultadoDemo`.
+- **Componentes utilitários**:
 - **Componentes utilitários**: 
   - `CardTrilhaComponent` para exibir resumo de trilha com progresso.
   - `BadgeNivelComponent` para níveis (iniciante/intermediário) com cores consistentes.
   - `ResumoProgressoComponent` para barra/anel de progresso global usando PrimeNG.
 
+Nota pragmática: começar apenas com utilitários essenciais (cards/listas) e adicionar microcomponentes como `BadgeNivelComponent` apenas quando o layout estiver consolidado, evitando fragmentação prematura.
+
 ## Serviços e estado
 - **TrilhasService**: fornece dados estáticos/dummy das trilhas e lições (pode ser objeto in-memory). Usa `signal` para armazenar lista de trilhas e computed para progresso global. Métodos para marcar lições concluídas e recuperar lições por id.
 - **TemaService (opcional)**: guarda tokens de tema (cores, fontes, espaçamentos) e oferece API para usar em styles inline/SCSS globais.
 - **Router providers**: usar `provideRouter` e `provideAnimations` no `app.config.ts`; sem NgModule.
+
+Observação de arquitetura: o serviço mantém os estados reativos (ex.: mapa `signal<Record<string, boolean>>` para conclusão de lições) em vez de embutir `Signal` diretamente nas interfaces de domínio. Isso evita acoplamento com o runtime do Angular e facilita testes/mocks com dados puros.
 
 ## Modelos/Interfaces
 - **Trilha**
@@ -35,6 +40,7 @@ Plataforma web educacional, tema escuro minimalista, construída com Angular 19 
   - `nivel: 'iniciante' | 'intermediario'`.
   - `categoria: string` (ex.: "Bindings", "Signals", "Formulários").
   - `tempoEstimadoMinutos: number`.
+  - `concluida: boolean` – flag pura; a camada reativa fica no serviço usando `signal`/`computed` por `id`.
   - `concluida: Signal<boolean>` – estado reativo controlado pelo serviço/rotas.
   - `componenteDemo: Type<unknown>` – referência ao componente standalone da demonstração.
 - **ConfiguracaoDemo (opcional para metadados exibidos)**
@@ -47,6 +53,8 @@ Plataforma web educacional, tema escuro minimalista, construída com Angular 19 
   2. Área de visualização que reage (cards, listas filtradas, badges, gráficos simples).
   3. Pequeno painel de dicas sobre o que observar (ex.: "Altere o texto e veja a badge atualizar").
 - **Reuso**: `PainelDemoLicao` recebe o componente demo via `ngComponentOutlet` ou renderiza diretamente se for parte do template. Para novos exemplos, basta criar componente standalone, registrá-lo na lição e o restante da página se adapta.
+
+Exibição de código: pode começar com `<pre><code>` estilizado para o MVP e evoluir depois para `CodeHighlighter` do PrimeNG se necessário.
 
 ## Mapa de rotas
 - `/` – **Dashboard**: visão geral das trilhas, progresso global, call-to-action para iniciar primeira trilha. Cards animados.
