@@ -5,6 +5,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { TrilhasService } from '../../services/trilhas.service';
+import { Trilha } from '../../models/trilha.model';
 
 @Component({
   selector: 'app-dashboard-trilhas',

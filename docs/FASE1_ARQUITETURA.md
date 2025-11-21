@@ -14,6 +14,7 @@ Plataforma web educacional, tema escuro minimalista, construída com Angular 19 
   - **PainelDemoLicao** (demonstração interativa específica da lição, sempre reativa e visual).
 - **Componentes de demo por lição**: um componente por lição para manter clareza, ex.: `DemoBindingsBasicosComponent`, `DemoSignalsReatividadeComponent`, `DemoFormulariosReativosComponent`. Cada um expõe signals/computed e interações locais. Quando um template crescer, quebrar em subcomponentes como `PainelControlesDemo`, `PainelResultadoDemo`.
 - **Componentes utilitários**:
+- **Componentes utilitários**: 
   - `CardTrilhaComponent` para exibir resumo de trilha com progresso.
   - `BadgeNivelComponent` para níveis (iniciante/intermediário) com cores consistentes.
   - `ResumoProgressoComponent` para barra/anel de progresso global usando PrimeNG.
@@ -40,6 +41,7 @@ Observação de arquitetura: o serviço mantém os estados reativos (ex.: mapa `
   - `categoria: string` (ex.: "Bindings", "Signals", "Formulários").
   - `tempoEstimadoMinutos: number`.
   - `concluida: boolean` – flag pura; a camada reativa fica no serviço usando `signal`/`computed` por `id`.
+  - `concluida: Signal<boolean>` – estado reativo controlado pelo serviço/rotas.
   - `componenteDemo: Type<unknown>` – referência ao componente standalone da demonstração.
 - **ConfiguracaoDemo (opcional para metadados exibidos)**
   - `objetivo: string`, `acoesPrincipais: string[]`, `entradaEsperada: string`, `resultadoEsperado: string` – usado para renderizar resumo antes da interação.
