@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-toolbar {
+  background: #111827;
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+}
+
+.app-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.toolbar-center a {
+  margin: 0 0.35rem;
+}
+
+.toolbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #9ca3af;
+}
+
+.progresso-label {
+  font-size: 0.9rem;
+}
+
+.conteudo-principal {
+  flex: 1;
+  padding: 1.5rem 1.25rem 2rem;
+}
+
+a.p-button-text {
+  color: #e5e7eb;
+}
+
+a.p-button-text:hover {
+  color: #22d3ee;
+  background: transparent;
+}

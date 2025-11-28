@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.licao-detalhe {
+  display: grid;
+  gap: 1rem;
+}
+
+.cabecalho-licao {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.descricao {
+  margin: 0;
+  color: #cbd5e1;
+  max-width: 720px;
+}
+
+.meta {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.painel-conteudo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.painel-explicacao,
+.painel-codigo,
+.painel-demo {
+  display: grid;
+}
+
+.acoes-licao {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.acoes-licao a[pButton] {
+  text-decoration: none;
+}
