@@ -1,0 +1,19 @@
+<div class="app-shell">
+  <p-toolbar class="shell-toolbar">
+    <div class="p-toolbar-group-start toolbar-left">
+      <span class="app-title">Angular Interativo 19</span>
+    </div>
+    <div class="p-toolbar-group-center toolbar-center">
+      <a pButton label="Dashboard" styleClass="p-button-text" routerLink="/"></a>
+      <a pButton label="Trilhas" styleClass="p-button-text" routerLink="/trilhas"></a>
+    </div>
+    <div class="p-toolbar-group-end toolbar-right">
+      <span class="progresso-label">Progresso geral</span>
+      <span pBadge [value]="progressoGlobal() + '%'" severity="info"></span>
+    </div>
+  </p-toolbar>
+
+  <main class="conteudo-principal">
+    <router-outlet></router-outlet>
+  </main>
+</div>
