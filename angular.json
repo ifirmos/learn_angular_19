@@ -75,5 +75,8 @@
       }
     }
   },
-  "defaultProject": "learn_angular_19"
+  "defaultProject": "learn_angular_19",
+  "cli": {
+    "analytics": false
+  }
 }
