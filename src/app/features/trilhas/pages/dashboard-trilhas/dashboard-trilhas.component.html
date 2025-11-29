@@ -1,0 +1,118 @@
+<!-- Dashboard Premium -->
+<div class="dashboard">
+  <!-- Hero Section (Primeira Dobra) -->
+  <section class="hero">
+    <!-- Lado Esquerdo - Hero Narrativo -->
+    <div class="hero__content">
+      <!-- Tagline (pílula) -->
+      <span class="hero__tagline">Trilhas guiadas de Angular 19</span>
+
+      <!-- Título forte -->
+      <h1 class="hero__titulo">
+        Domine Angular 19 com exemplos curtos e interativos
+      </h1>
+
+      <!-- Subtítulo -->
+      <p class="hero__subtitulo">
+        Aprenda Angular através de <strong>trilhas estruturadas</strong>, 
+        com <strong>lições focadas</strong> e <strong>demos interativas</strong> 
+        que você pode experimentar no navegador.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero__ctas">
+        <app-ui-button
+          variant="primary"
+          size="lg"
+          (click)="continuarTrilha()"
+        >
+          Continuar trilha
+        </app-ui-button>
+
+        <app-ui-button
+          variant="secondary"
+          size="lg"
+          (click)="verTodasTrilhas()"
+        >
+          Ver todas as trilhas
+        </app-ui-button>
+      </div>
+
+      <!-- Métricas rápidas -->
+      <app-metricas-rapidas [metricas]="metricas()" />
+    </div>
+
+    <!-- Lado Direito - Painel de Progresso -->
+    <aside class="hero__progresso">
+      <app-resumo-progresso
+        [progresso]="progressoGlobal()"
+        [recomendacao]="recomendacao()"
+        [areasChave]="areasChave"
+      />
+    </aside>
+  </section>
+
+  <!-- Segunda Dobra - Trilhas -->
+  <section class="trilhas-section">
+    <!-- Cabeçalho da seção -->
+    <header class="trilhas-section__header">
+      <div class="trilhas-section__titulo-wrapper">
+        <h2 class="trilhas-section__titulo">Trilhas disponíveis</h2>
+        <p class="trilhas-section__subtexto">
+          Sequências curtas e focadas para aprender Angular na prática
+        </p>
+      </div>
+
+      <!-- Filtro por nível -->
+      <div class="filtros-nivel">
+        <button
+          class="filtro-btn"
+          [class.filtro-btn--ativo]="filtroNivel() === 'todos'"
+          (click)="setFiltro('todos')"
+        >
+          Todos
+        </button>
+        <button
+          class="filtro-btn"
+          [class.filtro-btn--ativo]="filtroNivel() === 'iniciante'"
+          (click)="setFiltro('iniciante')"
+        >
+          Iniciante
+        </button>
+        <button
+          class="filtro-btn"
+          [class.filtro-btn--ativo]="filtroNivel() === 'intermediario'"
+          (click)="setFiltro('intermediario')"
+        >
+          Intermediário
+        </button>
+      </div>
+    </header>
+
+    <!-- Grid de cards de trilhas -->
+    <div class="trilhas-grid">
+      @if (trilhasFiltradas().length === 0) {
+        <p class="trilhas-vazio">
+          Nenhuma trilha encontrada com este filtro.
+        </p>
+      } @else {
+        @for (trilha of trilhasFiltradas(); track trilha.id; let index = $index) {
+          <div 
+            class="trilha-card-wrapper"
+            [style.animation-delay.ms]="index * 80"
+          >
+            <app-card-trilha
+              [titulo]="trilha.titulo"
+              [descricao]="trilha.descricao"
+              [nivel]="trilha.nivel"
+              [numeroLicoes]="trilha.licoes.length"
+              [progresso]="trilhasStore.progressoDaTrilha(trilha.id)"
+              [categoria]="trilha.categoriaPrincipal"
+              (acessar)="acessarTrilha(trilha.id)"
+            />
+          </div>
+        }
+      }
+    </div>
+  </section>
+</div>

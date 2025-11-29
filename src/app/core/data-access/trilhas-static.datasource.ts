@@ -3,6 +3,7 @@ import { Injectable, Type } from '@angular/core';
 import { TrilhasDataSource } from './trilhas.datasource';
 import { Trilha } from '../../shared/models/trilha.model';
 import { Licao } from '../../shared/models/licao.model';
+import { DemoBindingsEditorPreviewComponent } from '../../features/licoes/demos/bindings-editor-preview/bindings-editor-preview.component';
 import { DemoBindingsBasicosComponent } from '../../features/licoes/demos/demo-bindings-basicos/demo-bindings-basicos.component';
 
 const LICOES_MOCK: Licao[] = [
@@ -32,6 +33,33 @@ const LICOES_MOCK: Licao[] = [
       ],
     },
   },
+  {
+    id: 'bindings-editor-preview',
+    trilhaId: 'bindings-essenciais',
+    titulo: 'Editor & Preview',
+    descricaoCurta:
+      'Aprenda interpolação, property binding e event binding criando um editor de cartão de curso.',
+    nivel: 'iniciante',
+    categoria: 'Bindings',
+    tempoEstimadoMinutos: 20,
+    concluida: false,
+    componenteDemo: DemoBindingsEditorPreviewComponent as Type<unknown>,
+    configuracaoDemo: {
+      objetivo:
+        'Entender os pilares de binding no Angular: Interpolação, Property Binding e Event Binding.',
+      acoesPrincipais: [
+        'Edite o título e veja a atualização em tempo real (Interpolação/Signals).',
+        'Mude o nível para ver a cor do badge mudar (Property Binding).',
+        'Use o toggle de status para alterar a aparência do card.',
+      ],
+      entradaEsperada: 'Interação com os controles do formulário.',
+      resultadoEsperado: 'O card de preview deve refletir todas as mudanças instantaneamente.',
+      dicasObservacao: [
+        'Observe como o [ngModel] sincroniza o input com o signal.',
+        'Veja como [class.pausado] aplica estilos condicionalmente.',
+      ],
+    },
+  },
 ];
 
 const TRILHAS_MOCK: Trilha[] = [
@@ -44,6 +72,17 @@ const TRILHAS_MOCK: Trilha[] = [
     categoriaPrincipal: 'Fundamentos',
     licoes: LICOES_MOCK.filter(
       (l) => l.trilhaId === 'fundamentos-typescript',
+    ),
+  },
+  {
+    id: 'bindings-essenciais',
+    titulo: 'Bindings Essenciais',
+    descricao:
+      'Domine a comunicação entre o template e a classe do componente com os tipos de binding do Angular.',
+    nivel: 'iniciante',
+    categoriaPrincipal: 'Core',
+    licoes: LICOES_MOCK.filter(
+      (l) => l.trilhaId === 'bindings-essenciais',
     ),
   },
 ];

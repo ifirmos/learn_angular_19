@@ -1,0 +1,268 @@
+// Dashboard Premium - Estilos principais
+// Implementa design system, animações e responsividade
+
+// ============================================================================
+// ANIMAÇÕES
+// ============================================================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// CONTAINER PRINCIPAL
+// ============================================================================
+
+.dashboard {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+  animation: fadeIn var(--transition-normal);
+
+  @media (min-width: 768px) {
+    padding: var(--spacing-8) var(--spacing-6);
+  }
+}
+
+// ============================================================================
+// HERO SECTION
+// ============================================================================
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-10);
+  animation: fadeInUp var(--transition-normal);
+  animation-delay: 80ms;
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--spacing-10);
+  }
+}
+
+// Hero Content (Esquerda)
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.hero__tagline {
+  display: inline-block;
+  width: fit-content;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: var(--spacing-1) var(--spacing-3);
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid var(--color-accent-primary);
+  border-radius: var(--radius-full);
+}
+
+.hero__titulo {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-display);
+  color: var(--color-text-primary);
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-text-primary) 0%,
+    var(--color-accent-primary) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  @media (max-width: 640px) {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+  }
+}
+
+.hero__subtitulo {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+
+  strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.hero__ctas {
+  display: flex;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    
+    app-ui-button {
+      width: 100%;
+    }
+  }
+}
+
+// Hero Progresso (Direita)
+.hero__progresso {
+  display: flex;
+  align-items: flex-start;
+}
+
+// ============================================================================
+// SEÇÃO DE TRILHAS
+// ============================================================================
+
+.trilhas-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  animation: fadeInUp var(--transition-normal);
+  animation-delay: 160ms;
+}
+
+.trilhas-section__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.trilhas-section__titulo-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.trilhas-section__titulo {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.trilhas-section__subtexto {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+// ============================================================================
+// FILTROS DE NÍVEL
+// ============================================================================
+
+.filtros-nivel {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-bg-surface-alt);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent-primary);
+  }
+
+  &--ativo {
+    background: var(--color-accent-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-accent-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    flex: 1;
+    min-width: 80px;
+  }
+}
+
+// ============================================================================
+// GRID DE TRILHAS
+// ============================================================================
+
+.trilhas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.trilha-card-wrapper {
+  animation: fadeInUp var(--transition-normal);
+  animation-fill-mode: both;
+}
+
+.trilhas-vazio {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-10) var(--spacing-4);
+}
+
+// ============================================================================
+// ACESSIBILIDADE - Reduced Motion
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

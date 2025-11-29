@@ -2,6 +2,7 @@ import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { providePrimeNG } from 'primeng/config';
 
 import { appRoutes } from '../../routing/app.routes';
 
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withComponentInputBinding()),
     provideAnimations(),
     provideHttpClient(),
+    providePrimeNG({ ripple: true }),
 
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
 
