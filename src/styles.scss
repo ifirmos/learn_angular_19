@@ -1,0 +1,17 @@
+:root {
+  --fundo: #0f172a;
+  --superficie: #111827;
+  --borda: #1f2937;
+  --texto: #e5e7eb;
+}
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+a {
+  color: inherit;
+}
