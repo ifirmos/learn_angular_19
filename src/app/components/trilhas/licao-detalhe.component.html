@@ -1,0 +1,84 @@
+<section class="licao-detalhe">
+  <!-- Cabeçalho da lição -->
+  <header class="cabecalho-licao" *ngIf="licao as licaoAtual">
+    <p-tag
+      [value]="licaoAtual.nivel === 'iniciante' ? 'Iniciante' : 'Intermediário'"
+      severity="info">
+    </p-tag>
+
+    <h1>{{ licaoAtual.titulo }}</h1>
+    <p class="descricao">{{ licaoAtual.descricaoCurta }}</p>
+
+    <p class="meta">
+      Parte da trilha:
+      <a *ngIf="trilha as trilhaAtual" [routerLink]="['/trilhas', trilhaAtual.id]">
+        {{ trilhaAtual.titulo }}
+      </a>
+    </p>
+
+    <p class="meta">
+      Categoria: {{ licaoAtual.categoria }} •
+      Tempo estimado: {{ licaoAtual.tempoEstimadoMinutos }} min
+    </p>
+  </header>
+
+  <!-- Lição não encontrada -->
+  <section *ngIf="!licao">
+    <p>
+      Lição não encontrada.
+      <a routerLink="/trilhas">Voltar às trilhas</a>
+    </p>
+  </section>
+
+  <!-- Painéis principais -->
+  <section class="painel-conteudo" *ngIf="licao as l">
+    <div class="painel-explicacao">
+      <p-card header="Explicação">
+        <p>
+          Aqui virá a explicação textual detalhada da lição
+          <strong>{{ l.titulo }}</strong>.
+        </p>
+      </p-card>
+    </div>
+
+    <div class="painel-codigo">
+      <p-card header="Código">
+        <p>
+          Em uma próxima fase, este card exibirá o código TypeScript e HTML
+          da demonstração.
+        </p>
+      </p-card>
+    </div>
+
+    <div class="painel-demo">
+      <p-card header="Demonstração interativa">
+        <ng-container *ngIf="l.id === 'bindings-basicos'; else demoNaoImplementada">
+          <app-demo-bindings-basicos></app-demo-bindings-basicos>
+        </ng-container>
+
+        <ng-template #demoNaoImplementada>
+          <p>
+            A demonstração interativa para esta lição ainda não foi implementada.
+          </p>
+        </ng-template>
+      </p-card>
+    </div>
+  </section>
+
+  <!-- Ações da lição -->
+  <footer class="acoes-licao" *ngIf="licao">
+    <button
+      pButton
+      type="button"
+      label="Marcar como concluída"
+      (click)="marcarComoConcluida()">
+    </button>
+
+    <a
+      pButton
+      type="button"
+      label="Voltar para trilha"
+      [routerLink]="trilha ? ['/trilhas', trilha.id] : ['/trilhas']">
+    </a>
+  </footer>
+</section>
