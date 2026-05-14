@@ -1,0 +1,209 @@
+<div class="demo-grid ttu-grid">
+
+  <!-- 1. string | number + type guard -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">string | number</code>
+      <span class="dc-hint">type guard</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo" placeholder="Digite um número ou texto…"
+             [ngModel]="entrada()" (ngModelChange)="entrada.set($event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">tipo detectado:</span>
+        <span class="tag"
+          [class.tag--cyan]="tipoAtual() === 'number'"
+          [class.tag--orange]="tipoAtual() === 'string'"
+          [class.tag--red]="tipoAtual() === 'vazio'">{{ tipoAtual() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">resultado:</span>
+        <span class="rval">{{ guardResult() }}</span>
+      </div>
+    </div>
+    <p class="tip"><code>typeof</code> em runtime estreita o tipo — TypeScript reconhece o narrowing em compile-time.</p>
+  </div>
+
+  <!-- 2. Literal Union -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">'ativo' | 'pausado' | …</code>
+      <span class="dc-hint">literal union</span>
+    </div>
+    <div class="seg-group">
+      @for (s of statusList; track s) {
+        <button class="seg" [class.seg--on]="status() === s" (click)="status.set(s)">{{ s }}</button>
+      }
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">status:</span>
+        <span class="tag"
+          [class.tag--green]="status() === 'ativo'"
+          [class.tag--orange]="status() === 'pausado'"
+          [class.tag--red]="status() === 'erro'"
+          [class.tag--blue]="status() === 'concluido'">{{ status() }}</span>
+      </div>
+      <div class="mono-line">let s: Status = '{{ status() }}'; // ✓</div>
+    </div>
+    <p class="tip">Apenas os valores declarados no tipo são aceitos. Qualquer outro valor vira <strong>erro de build</strong>.</p>
+  </div>
+
+  <!-- 3. Valor inválido — interativo -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">valor inválido</code>
+      <span class="dc-hint">erro em compile-time</span>
+    </div>
+    <div class="type-ref">
+      <span class="type-kw">type</span> Status =
+      @for (s of statusList; track s; let last = $last) {
+        <span class="type-lit">'{{ s }}'</span>@if (!last) { <span class="type-pipe">|</span> }
+      }
+    </div>
+    <div class="ctrl-row">
+      <input class="campo campo--sm" placeholder="Digite um valor e veja o resultado…"
+             [ngModel]="tentativa()" (ngModelChange)="tentativa.set($event)">
+    </div>
+    <div class="validity-result">
+      @if (tentativa() === '') {
+        <div class="validity-idle">↑ Tente: 'deletado', 'ok', 'ativo'…</div>
+      } @else {
+        <div class="validity-row" [class.validity-ok]="tentativaValida()" [class.validity-err]="!tentativaValida()">
+          <span class="validity-icon">{{ tentativaValida() ? '✓' : '✗' }}</span>
+          <code class="validity-val">'{{ tentativa() }}'</code>
+          <span class="validity-msg">{{ tentativaValida() ? 'pertence à união' : 'não existe em Status' }}</span>
+        </div>
+        <div class="code-sim" [class.code-sim--ok]="tentativaValida()" [class.code-sim--err]="!tentativaValida()">
+          @if (tentativaValida()) {
+            <span>let s: Status = '{{ tentativa() }}';</span>
+          } @else {
+            <span>// TS2322: Type '"{{ tentativa() }}"'</span><br>
+            <span>// is not assignable to type 'Status'</span>
+          }
+        </div>
+      }
+    </div>
+    <p class="tip">Erros de digitação em literals viram <strong>erro de build</strong> — nunca chegam em produção.</p>
+  </div>
+
+  <!-- 4. string | undefined -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">string | undefined</code>
+      <span class="dc-hint">campo opcional</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo campo--sm" placeholder="vazio"
+             [ngModel]="opcional()" (ngModelChange)="opcional.set($event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">valor:</span>
+        <span class="tag"
+          [class.tag--orange]="opcionalResult() === 'undefined (sem valor)'"
+          [class.tag--cyan]="opcionalResult() !== 'undefined (sem valor)'">
+          {{ opcionalResult() }}
+        </span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">saudar():</span>
+        <span class="rval">
+          @if (opcional().trim() === '') { Olá, visitante! }
+          @else { Olá, {{ opcional().trim() }}! }
+        </span>
+      </div>
+    </div>
+    <div class="opt-code">
+      <div class="opt-line opt-dim"><span class="type-kw">function</span> saudar(nome<span class="type-op">?:</span> <span class="type-lit">string</span>) &#123;</div>
+      <div class="opt-line" [class.opt-active]="opcional().trim() === ''">
+        &nbsp;&nbsp;<span class="type-kw">if</span> (nome === <span class="type-op">undefined</span>) <span class="type-kw">return</span> <span class="type-lit">'Olá, visitante!'</span>;
+      </div>
+      <div class="opt-line" [class.opt-active]="opcional().trim() !== ''">
+        &nbsp;&nbsp;<span class="type-kw">return</span> <span class="type-lit">`Olá, $&#123;nome&#125;!`</span>;
+      </div>
+      <div class="opt-line opt-dim">&#125;</div>
+      <div class="opt-line opt-result" [class.opt-result--undef]="opcional().trim() === ''">
+        <span class="type-op">//</span>
+        @if (opcional().trim() === '') { → 'Olá, visitante!' }
+        @else { → 'Olá, {{ opcional().trim() }}!' }
+      </div>
+    </div>
+    <p class="tip">Deixe o campo vazio para simular <code>undefined</code>. TypeScript exige verificar antes de usar.</p>
+  </div>
+
+  <!-- 5. Record<K, V> interativo -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">5</span>
+      <code class="dc-name">Record&lt;K, V&gt;</code>
+      <span class="dc-hint">objeto com chaves garantidas</span>
+    </div>
+    <div class="record-layout">
+
+      <!-- coluna esquerda: labels + toggle de chaves + tabela -->
+      <div class="record-left">
+        <div class="rrow" style="gap:.4rem; flex-wrap:wrap; margin-bottom:.5rem;">
+          <span class="tag tag--cyan">K = Tamanho</span>
+          <span class="rlabel">as chaves</span>
+          <span class="tag tag--blue">V = number</span>
+          <span class="rlabel">os valores</span>
+        </div>
+        <p class="record-instr">Clique para remover chaves e causar o erro:</p>
+        <div class="seg-group" style="margin-bottom:.5rem;">
+          @for (t of tamanhoList; track t) {
+            <button class="seg" [class.seg--on]="recordKeys().has(t)" (click)="toggleRecordKey(t)">{{ t }}</button>
+          }
+        </div>
+        <div class="record-table">
+          @for (entry of tamanhoEntries; track entry.key) {
+            <div class="record-row"
+              [class.record-row--active]="recordKeys().has(entry.key)"
+              [class.record-row--missing]="!recordKeys().has(entry.key)">
+              <span class="record-key">{{ entry.key }}</span>
+              <span class="record-arrow">→</span>
+              <span class="record-val">R$ {{ entry.val }}</span>
+              <span class="ri" [class.ri--ok]="recordKeys().has(entry.key)">{{ recordKeys().has(entry.key) ? '✓' : '✗' }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- coluna direita: simulação do código TypeScript -->
+      <div class="record-right">
+        <div class="record-code">
+          <div class="mono-line">const precos: Record&lt;Tamanho, number&gt; = &#123;</div>
+          @for (entry of tamanhoEntries; track entry.key) {
+            @if (recordKeys().has(entry.key)) {
+              <div class="mono-line rcode-ok">&nbsp;&nbsp;{{ entry.key }}: {{ entry.val }},</div>
+            } @else {
+              <div class="mono-line rcode-err">&nbsp;&nbsp;<span class="rcode-strike">{{ entry.key }}: ???</span>&nbsp;&nbsp;// ✗ faltando</div>
+            }
+          }
+          <div class="mono-line">&#125;;</div>
+          @if (recordValido()) {
+            <div class="mono-line rcode-ok" style="margin-top:.4rem">// ✓ TypeScript aprovado</div>
+          } @else {
+            <div class="mono-line rcode-err" style="margin-top:.4rem">// TS2741: '{{ recordFaltando().join("', '") }}'</div>
+            <div class="mono-line rcode-err">// faltando em Record&lt;Tamanho, number&gt;</div>
+          }
+        </div>
+      </div>
+
+    </div>
+    <p class="tip">
+      @if (recordValido()) {
+        Todas as {{ tamanhoList.length }} chaves estão presentes. Remova uma para ver o erro de build.
+      } @else {
+        Chave(s) <strong>{{ recordFaltando().join(', ') }}</strong> faltando — erro em compile-time!
+      }
+    </p>
+  </div>
+
+</div>

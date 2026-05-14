@@ -1,16 +1,16 @@
-# Plataforma Educacional Angular 19 – Fase 1 (Especificação)
+# Plataforma Educacional Angular 21 – Fase 1 (Especificação)
 
 ## Visão geral
-Plataforma web educacional, tema escuro minimalista, construída com Angular 19 standalone e PrimeNG 19. Todo conteúdo em português, com foco em exemplos interativos curtos e visuais. Estrutura baseada em trilhas e lições, cada lição composta por explicação, trecho de código exibido e demonstração reativa.
+Plataforma web educacional, tema escuro minimalista, construída com Angular 21 e PrimeNG 21. Todo conteúdo em português, com foco em exemplos interativos curtos e visuais. Estrutura baseada em trilhas e lições, cada lição composta por explicação, trecho de código exibido e demonstração reativa.
 
 ## Arquitetura de componentes
-- **AppShellComponent (standalone)**: layout base, header com navegação principal, área de conteúdo com `<router-outlet>`, barra lateral opcional para progresso geral. Responsável por aplicar tema e tokens de design (cores, tipografia, espaçamento).
+- **AppShellComponent**: layout base, header com navegação principal, área de conteúdo com `<router-outlet>`, barra lateral opcional para progresso geral. Responsável por aplicar tema e tokens de design (cores, tipografia, espaçamento).
 - **DashboardTrilhasComponent**: landing com cards de trilhas, animação de entrada, visão de progresso agregado. Permite navegar para detalhes da trilha.
 - **ListaTrilhasComponent**: lista filtrável/paginável de trilhas com badges de nível. Reutilizável em dashboard e página dedicada.
 - **DetalheTrilhaComponent**: apresenta resumo da trilha, progresso calculado e lista de lições com status (concluída/em andamento). Ações para iniciar/continuar lição.
 - **LicaoDetalheComponent**: página de lição contendo três regiões claras: 
   - **PainelExplicacaoLicao** (texto curto, bullets do conceito e tempo estimado);
-  - **PainelCodigoLicao** (tabs TS/HTML com destaque via PrimeNG CodeHighlighter ou simples formatação, sem execução inline);
+  - **PainelCodigoLicao** (tabs TS/HTML com bloco `<pre><code>` estilizado, sem execução inline — não há `CodeHighlighter` no PrimeNG 21);
   - **PainelDemoLicao** (demonstração interativa específica da lição, sempre reativa e visual).
 - **Componentes de demo por lição**: um componente por lição para manter clareza, ex.: `DemoBindingsBasicosComponent`, `DemoSignalsReatividadeComponent`, `DemoFormulariosReativosComponent`. Cada um expõe signals/computed e interações locais. Quando um template crescer, quebrar em subcomponentes como `PainelControlesDemo`, `PainelResultadoDemo`.
 - **Componentes utilitários**:
@@ -23,7 +23,7 @@ Nota pragmática: começar apenas com utilitários essenciais (cards/listas) e a
 ## Serviços e estado
 - **TrilhasService**: fornece dados estáticos/dummy das trilhas e lições (pode ser objeto in-memory). Usa `signal` para armazenar lista de trilhas e computed para progresso global. Métodos para marcar lições concluídas e recuperar lições por id.
 - **TemaService (opcional)**: guarda tokens de tema (cores, fontes, espaçamentos) e oferece API para usar em styles inline/SCSS globais.
-- **Router providers**: usar `provideRouter` e `provideAnimations` no `app.config.ts`; sem NgModule.
+- **Router providers**: usar `provideRouter` e `providePrimeNG({ theme: { preset: Aura } })` no `app.config.ts`; sem NgModule. **Não** use `provideAnimations` — o PrimeNG 21 usa animações CSS nativas.
 
 Observação de arquitetura: o serviço mantém os estados reativos (ex.: mapa `signal<Record<string, boolean>>` para conclusão de lições) em vez de embutir `Signal` diretamente nas interfaces de domínio. Isso evita acoplamento com o runtime do Angular e facilita testes/mocks com dados puros.
 
@@ -52,7 +52,7 @@ Observação de arquitetura: o serviço mantém os estados reativos (ex.: mapa `
   3. Pequeno painel de dicas sobre o que observar (ex.: "Altere o texto e veja a badge atualizar").
 - **Reuso**: `PainelDemoLicao` recebe o componente demo via `ngComponentOutlet` ou renderiza diretamente se for parte do template. Para novos exemplos, basta criar componente standalone, registrá-lo na lição e o restante da página se adapta.
 
-Exibição de código: pode começar com `<pre><code>` estilizado para o MVP e evoluir depois para `CodeHighlighter` do PrimeNG se necessário.
+Exibição de código: usar `<pre><code>` estilizado. Não há `CodeHighlighter` no PrimeNG 21; para highlight de sintaxe avançado, avaliar biblioteca externa com aprovação explícita.
 
 ## Mapa de rotas
 - `/` – **Dashboard**: visão geral das trilhas, progresso global, call-to-action para iniciar primeira trilha. Cards animados.
@@ -70,21 +70,22 @@ Navegação: header com menu e breadcrumbs simples; cards e botões levam à pr�
 - **Responsividade**: grid fluido com colunas colapsando em pilha para telas menores; prioridade para desktop, mantendo legibilidade em mobile.
 
 ## Estratégia de interatividade e reuso
-- **Signals/computed**: progresso global, estado de conclusão de lições e estados locais das demos. Computeds derivam totais, mensagens e filtros para minimizar lógica em template.
+- **Signals/computed/linkedSignal**: progresso global, estado de conclusão de lições e estados locais das demos. Computeds derivam totais, mensagens e filtros para minimizar lógica em template. Use `linkedSignal()` para estado dependente de outro signal (ex.: lição selecionada ao mudar de trilha). Para carregamento assíncrono reativo, use `resource()` / `rxResource()` (experimental no Angular 21).
 - **Componentes pequenos**: cada lição tem seu próprio componente demo; código e explicação são renderizados em subcomponentes (`PainelExplicacaoLicao`, `PainelCodigoLicao`, `PainelDemoLicao`). Evita templates extensos.
 - **Adicionar novas lições**: criar componente demo standalone, registrar no `TrilhasService` com metadados; rotas e UI reutilizam os mesmos layouts. Não requer mudanças estruturais.
 - **Formulários reativos**: demos de formulário usam `FormGroup` com validações ao vivo, mensagens de erro e resumo reativo em cards/badges.
-- **Diretivas estruturais modernas**: usar `@for` e `@if` nas listas de lições e nas demos para exibir/ocultar seções conforme estado do usuário.
+- **Controle de fluxo nativo**: usar `@for`, `@if` e `@switch` nas listas e demos. Não usar `*ngFor`, `*ngIf`, `*ngSwitch`. Use `@defer` para demos interativas pesadas que não precisam carregar na inicialização da página.
+- **Servidores MCP disponíveis**: `@angular/cli MCP` para scaffold de componentes/serviços via `ng generate`; `@primeng/mcp` para consultar API, props e tokens de qualquer componente PrimeNG antes de usá-lo.
 
 ## Trilha inicial sugerida
 - **Fundamentos TypeScript para Angular**: tipos básicos, interfaces, classes simples, generics leves aplicados a serviços.
-- **Fundamentos Angular**: componentes standalone, ciclo de template, DI básica, roteamento com `provideRouter`.
+- **Fundamentos Angular**: componentes (standalone por padrão no Angular 21, não declarar `standalone: true`), ciclo de template, DI com `inject()`, roteamento com `provideRouter`.
 - **Bindings essenciais**: interpolação, property/event binding, two-way com `[(ngModel)]`, uso de PrimeNG inputs.
 - **Signals e computeds**: contador reativo, lista filtrada, badge de status derivado.
 - **Formulários reativos**: formulário simples de cadastro de curso com validações, mensagens e resumo de dados em tempo real.
 
 ## Checklist das próximas fases
-1. **Fase 2**: criar `main.ts` e `app.config.ts` com `bootstrapApplication`, `provideRouter`, `provideAnimations`, tema global e layout base (`AppShellComponent`).
+1. **Fase 2**: criar `main.ts` e `app.config.ts` com `bootstrapApplication`, `provideRouter`, `providePrimeNG({ theme: { preset: Aura } })`, tema global e layout base (`AppShellComponent`). Não adicionar `provideAnimations`.
 2. **Fase 3**: implementar rotas principais, header/nav e dashboard com cards de trilhas reutilizando `ListaTrilhasComponent`.
 3. **Fase 4**: estruturar trilha "Fundamentos TypeScript" com 3–5 lições interativas e respectivos componentes demo.
 4. **Fase 5**: adicionar trilhas de Bindings, Signals e Formulários reativos com demos completas.

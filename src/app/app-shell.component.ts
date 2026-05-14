@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -7,7 +7,7 @@ import { TrilhasService } from './services/trilhas.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, RouterLink, ToolbarModule, ButtonModule, BadgeModule],
   templateUrl: './app-shell.component.html',
   styleUrls: ['./app-shell.component.scss'],

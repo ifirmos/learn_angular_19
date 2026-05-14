@@ -1,0 +1,10 @@
+
+    <div class="metricas-rapidas">
+      @for (metrica of metricas(); track metrica.label) {
+        <div class="metrica">
+          <span class="metrica__valor">{{ metrica.valor }}</span>
+          <span class="metrica__label">{{ metrica.label }}</span>
+        </div>
+      }
+    </div>
+  

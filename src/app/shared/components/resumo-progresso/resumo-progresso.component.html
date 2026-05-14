@@ -1,0 +1,69 @@
+
+    <div class="resumo-progresso">
+      <div class="resumo-progresso__header">
+        <h3 class="resumo-progresso__titulo">Seu Progresso</h3>
+      </div>
+
+      <!-- Círculo de progresso -->
+      <div class="progresso-circular">
+        <svg class="progresso-circular__svg" viewBox="0 0 120 120">
+          <!-- Background circle -->
+          <circle
+            class="progresso-circular__background"
+            cx="60"
+            cy="60"
+            r="54"
+            fill="none"
+            stroke="var(--color-bg-surface-alt)"
+            stroke-width="8"
+          />
+          <!-- Progress circle -->
+          <circle
+            class="progresso-circular__progress"
+            cx="60"
+            cy="60"
+            r="54"
+            fill="none"
+            stroke="url(#gradient)"
+            stroke-width="8"
+            [attr.stroke-dasharray]="circumference"
+            [attr.stroke-dashoffset]="strokeDashoffset()"
+            stroke-linecap="round"
+          />
+          <!-- Gradient definition -->
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--color-accent-primary)" />
+              <stop offset="100%" stop-color="var(--color-accent-muted)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="progresso-circular__valor">
+          <span class="progresso-circular__numero">{{ progresso() }}</span>
+          <span class="progresso-circular__simbolo">%</span>
+        </div>
+      </div>
+
+      <!-- Barra linear -->
+      <div class="barra-progresso">
+        <div 
+          class="barra-progresso__preenchimento"
+          [style.width.%]="progresso()"
+        ></div>
+      </div>
+
+      <!-- Texto de recomendação -->
+      @if (recomendacao()) {
+        <p class="resumo-progresso__recomendacao">{{ recomendacao() }}</p>
+      }
+
+      <!-- Badges de áreas-chave -->
+      @if (areasChave() && areasChave()!.length > 0) {
+        <div class="areas-chave">
+          @for (area of areasChave()!; track area) {
+            <app-ui-badge variant="default" size="sm">{{ area }}</app-ui-badge>
+          }
+        </div>
+      }
+    </div>
+  

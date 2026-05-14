@@ -1,0 +1,124 @@
+
+    <div class="demo-container">
+      <!-- Painel Editor (Esquerda) -->
+      <div class="editor-panel">
+        <h3 class="panel-title">Editor</h3>
+        
+        <div class="form-group">
+          <label for="titulo">Título do Curso</label>
+          <input 
+            type="text" 
+            id="titulo" 
+            [ngModel]="titulo()" 
+            (ngModelChange)="titulo.set($event)"
+            class="form-input"
+            placeholder="Ex: Fundamentos de Angular"
+          >
+          <span class="hint">Interpolação: {{ '{' + '{ titulo() }' + '}' }}</span>
+        </div>
+
+        <div class="form-group">
+          <label for="nivel">Nível</label>
+          <select 
+            id="nivel" 
+            [ngModel]="nivel()" 
+            (ngModelChange)="nivel.set($event)"
+            class="form-select"
+          >
+            <option value="Iniciante">Iniciante</option>
+            <option value="Intermediário">Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
+          <span class="hint">Property Binding: [variant]="..."</span>
+        </div>
+
+        <div class="form-group">
+          <label for="horas">Carga Horária (horas)</label>
+          <input 
+            type="range" 
+            id="horas" 
+            min="1" 
+            max="40" 
+            [ngModel]="horas()" 
+            (ngModelChange)="horas.set($event)"
+            class="form-range"
+          >
+          <div class="range-value">{{ horas() }}h</div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [ngModel]="ativo()" 
+              (ngModelChange)="ativo.set($event)"
+            >
+            Curso Ativo
+          </label>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [ngModel]="destaque()" 
+              (ngModelChange)="destaque.set($event)"
+            >
+            Mostrar badge "NOVO"
+          </label>
+        </div>
+
+        <div class="editor-actions">
+          <button class="btn btn-secondary btn-sm" (click)="resetar()">
+            Resetar
+          </button>
+        </div>
+      </div>
+
+      <!-- Painel Preview (Direita) -->
+      <div class="preview-panel">
+        <h3 class="panel-title">Preview</h3>
+        
+        <div class="card-preview" [class.pausado]="!ativo()">
+          <div class="card-header">
+            <div class="badges">
+              <span class="badge" [class]="'badge-' + badgeVariant()">{{ nivel() }}</span>
+              @if (destaque()) {
+                <span class="badge badge-success">NOVO</span>
+              }
+            </div>
+            <button 
+              class="favorite-btn" 
+              [class.active]="favorito()"
+              (click)="toggleFavorito()"
+              title="Favoritar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [attr.fill]="favorito() ? 'currentColor' : 'none'">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="card-body">
+            <h4 class="card-title">{{ titulo() || 'Sem título' }}</h4>
+            <div class="card-meta">
+              <span class="meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                {{ horas() }} horas
+              </span>
+              <span class="meta-item status" [class.inactive]="!ativo()">
+                <span class="status-dot"></span>
+                {{ ativo() ? 'Disponível' : 'Pausado' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button class="btn btn-primary btn-md full-width">
+              Ver Detalhes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  

@@ -1,0 +1,50 @@
+
+    <div 
+      class="card-trilha"
+      [class.card-trilha--hover]="true"
+    >
+      <!-- Header -->
+      <div class="card-trilha__header">
+        <app-badge-nivel [nivel]="nivel()" />
+        <span class="card-trilha__meta">{{ numeroLicoes() }} lições</span>
+      </div>
+
+      <!-- Corpo -->
+      <div class="card-trilha__body">
+        <h3 class="card-trilha__titulo">{{ titulo() }}</h3>
+        <p class="card-trilha__descricao">{{ descricao() }}</p>
+      </div>
+
+      <!-- Rodapé -->
+      <div class="card-trilha__footer">
+        <!-- Progresso -->
+        <div class="progresso">
+          <div class="progresso__info">
+            <span class="progresso__percentual">{{ progresso() }}%</span>
+            <span class="progresso__label">concluído</span>
+          </div>
+          <div class="progresso__barra">
+            <div 
+              class="progresso__preenchimento"
+              [style.width.%]="progresso()"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Categoria -->
+        @if (categoria()) {
+          <span class="card-trilha__categoria">{{ categoria() }}</span>
+        }
+
+        <!-- Ação -->
+        <app-ui-button
+          variant="primary"
+          size="md"
+          (click)="onAcessar()"
+          class="card-trilha__acao"
+        >
+          {{ progresso() > 0 ? 'Continuar' : 'Iniciar' }} trilha
+        </app-ui-button>
+      </div>
+    </div>
+  

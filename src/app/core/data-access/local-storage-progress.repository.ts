@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProgressRepository } from './progress.repository';
 
-const STORAGE_KEY = 'learn-angular19-progress';
+const STORAGE_KEY = 'learn-angular21-progress';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageProgressRepository implements ProgressRepository {

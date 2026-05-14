@@ -1,8 +1,8 @@
-# Plataforma Educacional Angular 19 – Arquitetura
+# Plataforma Educacional Angular 21 – Arquitetura
 
 ## 1. Contexto e objetivo
 
-Plataforma web educacional em **Angular 19 standalone** + **PrimeNG 19**, com foco em:
+Plataforma web educacional em **Angular 21** + **PrimeNG 21**, com foco em:
 
 * Ensinar Angular por meio de **trilhas** e **lições**.
 * Cada lição contém:
@@ -21,12 +21,19 @@ Este documento descreve a **arquitetura base endurecida**, pensada para:
 
 ## 2. Stack e visão geral
 
-* **Framework:** Angular 19 (standalone, `bootstrapApplication`, `provideRouter`, `provideAnimations`).
-* **UI:** PrimeNG 19 (+ componentes de UI próprios).
-* **Tema:** dark theme minimalista (tokens de design).
-* **Estado:** `signal` / `computed` em services tipo “Store”.
+* **Framework:** Angular 21 (standalone por padrão, zoneless por padrão, `bootstrapApplication`, `provideRouter`, `providePrimeNG`).
+* **UI:** PrimeNG 21 (+ componentes de UI próprios).
+* **Tema:** dark theme minimalista (tokens de design PrimeNG 21).
+* **Estado:** `signal` / `computed` / `linkedSignal` em services tipo "Store".
 * **Dados:** fonte estática (in-memory) na Fase 1, preparada para API/Backend futuro.
 * **Idioma:** todo conteúdo em português.
+
+**Servidores MCP disponíveis** (`.vscode/mcp.json`):
+
+* `@angular/cli MCP` – scaffold de componentes, serviços e guards via `ng generate`.
+* `@primeng/mcp` – consultar API, props e tokens de componentes PrimeNG antes de implementá-los.
+
+Ver Secão 3.5 do `docs/guia-agente-ia.md` para lista completa de tools MCP.
 
 ---
 
@@ -280,6 +287,8 @@ export class TrilhasStore {
 }
 ```
 
+> **Angular 21 – Padrões obrigatórios no TrilhasStore**: use `inject()` em vez de injeção por construtor, e `changeDetection: ChangeDetectionStrategy.OnPush` em todos os componentes que consomem este store. Para carregamento assíncrono reativo, `resource()` / `rxResource()` são alternativas ao `async/await` manual (experimentais no Angular 21).
+
 ### 7.2. ProgressRepository
 
 Arquivo: `core/data-access/progress.repository.ts`
@@ -293,7 +302,7 @@ export abstract class ProgressRepository {
 
 Implementação atual: `LocalStorageProgressRepository`:
 
-* Usa `localStorage` com chave fixa (ex.: `learn-angular19-progress`).
+* Usa `localStorage` com chave fixa (ex.: `learn-angular21-progress`).
 * Oculta detalhes de persistência da UI.
 
 ### 7.3. LicoesRegistry
@@ -433,7 +442,7 @@ Responsabilidades:
 * 3 regiões principais:
 
   1. **PainelExplicacaoLicao**: texto curto, bullets, tempo estimado.
-  2. **PainelCodigoLicao**: tabs TS/HTML usando `<pre><code>` (MVP) ou CodeHighlighter no futuro.
+  2. **PainelCodigoLicao**: tabs TS/HTML usando `<pre><code>` estilizado. Não há `CodeHighlighter` no PrimeNG 21; para highlight avançado, avaliar biblioteca externa com aprovação explícita.
   3. **PainelDemoLicao**: demo interativa via `ngComponentOutlet`.
 
 * Integração com estado:
@@ -569,12 +578,17 @@ O `PainelDemoLicao` pode tentar ler esses metadados para enriquecer a UI.
 
 ### 13.2. Adicionar uma nova lição + demo
 
-1. Criar componente demo standalone em `features/licoes/demos`.
-2. Definir entrada correspondente em `licoesStatic`:
-
+1. Criar componente demo standalone em `features/licoes/demos/<nome-demo>/`.
+2. Seguir o **padrão de blocos play + code** (Seção 11):
+   * Cada cenário pedagógico é um `.block` com `.block-play` (interação + resultado) e `.block-code` (código TS + HTML ao vivo).
+   * Os valores live são interpolação Angular direta: `<span class="ct-live--N">{{ signal() }}</span>`.
+   * Usar `<pre class="cl">` por linha de código.
+   * Implementar `codeChange = output<CodeFile[]>()` e emitir no `effect()` do construtor.
+3. Definir entrada correspondente em `licoesStatic`:
    * `id`, `trilhaId`, `titulo`, `descricaoCurta`, `nivel`, `categoria`, `tempoEstimadoMinutos`, `componenteDemo`, `configuracaoDemo`.
-3. Garantir que a trilha relevante inclua essa lição em sua lista (`Trilha.licoes`).
-4. Nenhuma alteração estrutural é necessária em rotas ou layout.
+   * `layout: 'demo-largura-total'` para demos multi-bloco.
+4. Garantir que a trilha relevante inclua essa lição em sua lista (`Trilha.licoes`).
+5. Nenhuma alteração estrutural é necessária em rotas ou layout.
 
 ---
 

@@ -1,0 +1,115 @@
+<div class="types-grid">
+
+  <div class="type-card tc--1">
+    <div class="tc-head">
+      <span class="cn cn--1">1</span>
+      <code class="tc-name">string</code>
+    </div>
+    <input
+      type="text"
+      class="campo"
+      [ngModel]="nome()"
+      (ngModelChange)="nome.set($event)"
+      placeholder="texto"
+    />
+    <div class="tc-result">
+      <div class="rrow">
+        <span class="rmeth">.length</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ nome().length }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rmeth">.toUpperCase()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ nomeUp() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="type-card tc--2">
+    <div class="tc-head">
+      <span class="cn cn--2">2</span>
+      <code class="tc-name">number</code>
+    </div>
+    <input
+      type="number"
+      class="campo"
+      [ngModel]="preco()"
+      (ngModelChange)="preco.set(+$event)"
+      step="0.5"
+    />
+    <div class="tc-result">
+      <div class="rrow">
+        <span class="rmeth">Math.round()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ precoRound() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rmeth">.toFixed(2)</span>
+        <span class="arrow">→</span>
+        <span class="rval">&quot;{{ precoFixed() }}&quot;</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="type-card tc--3">
+    <div class="tc-head">
+      <span class="cn cn--3">3</span>
+      <code class="tc-name">boolean</code>
+    </div>
+    <div class="ctrl--toggle">
+      <label class="toggle">
+        <input
+          type="checkbox"
+          class="toggle-chk"
+          [ngModel]="ativo()"
+          (ngModelChange)="ativo.set($event)"
+        />
+        <span class="toggle-track" [class.is-on]="ativo()">
+          <span class="toggle-knob"></span>
+        </span>
+      </label>      <code class="toggle-val" [class.val--true]="ativo()" [class.val--false]="!ativo()">{{ ativo() }}</code>    </div>
+    <div class="tc-result">
+      <div class="rrow">
+        <span class="arrow">→</span>
+        <span class="rval" [class.rval--ok]="ativo()" [class.rval--no]="!ativo()">{{ ativoMsg() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rmeth">&#64;if (ativo)</span>
+        <span class="arrow">→</span>
+        <span class="rval" [class.rval--ok]="ativo()" [class.rval--no]="!ativo()">{{ ativo() ? 'renderiza' : 'oculta' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="type-card tc--4">
+    <div class="tc-head">
+      <span class="cn cn--4">4</span>
+      <code class="tc-name">inferência</code>
+    </div>
+    <input
+      type="text"
+      class="campo"
+      [ngModel]="infTexto()"
+      (ngModelChange)="infTexto.set($event)"
+    />
+    <div class="tc-result">
+      <div class="rrow">
+        <span class="rmeth">&quot;{{ infTexto() }}&quot;</span>
+        <span class="arrow">→</span>
+        <span class="rval">string</span>
+      </div>
+      <div class="rrow">
+        <span class="rmeth">19</span>
+        <span class="arrow">→</span>
+        <span class="rval">number</span>
+      </div>
+      <div class="rrow">
+        <span class="rmeth">true</span>
+        <span class="arrow">→</span>
+        <span class="rval">boolean</span>
+      </div>
+    </div>
+  </div>
+
+</div>

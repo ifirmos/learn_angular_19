@@ -1,0 +1,118 @@
+
+    <div class="demo-typescript">
+      <!-- Editor Side -->
+      <div class="editor-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <h4>Definir Produto</h4>
+        </div>
+        
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="nome">Nome <code>string</code></label>
+            <input 
+              id="nome"
+              type="text" 
+              class="input-field"
+              [ngModel]="produto().nome"
+              (ngModelChange)="atualizarProduto('nome', $event)"
+              placeholder="Nome do produto"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="preco">Preço <code>number</code></label>
+            <input 
+              id="preco"
+              type="number" 
+              class="input-field"
+              [ngModel]="produto().preco"
+              (ngModelChange)="atualizarProduto('preco', $event)"
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <div class="control-group control-row">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [ngModel]="produto().emEstoque"
+                (ngModelChange)="atualizarProduto('emEstoque', $event)"
+              />
+              <span>Em Estoque <code>boolean</code></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="type-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Cada campo usa um <strong>tipo TypeScript</strong> diferente. O compilador valida os dados automaticamente.</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Preview Side -->
+      <div class="preview-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <h4>Objeto Tipado</h4>
+        </div>
+
+        <div class="object-preview">
+          <div class="interface-header">
+            <span class="keyword">interface</span> <span class="type-name">Produto</span> {{'{'}}
+          </div>
+          <div class="properties">
+            <div class="property">
+              <span class="prop-name">nome:</span>
+              <span class="prop-type">string</span>
+              <span class="prop-value">= "{{ produto().nome }}"</span>
+            </div>
+            <div class="property">
+              <span class="prop-name">preco:</span>
+              <span class="prop-type">number</span>
+              <span class="prop-value">= {{ produto().preco }}</span>
+            </div>
+            <div class="property">
+              <span class="prop-name">emEstoque:</span>
+              <span class="prop-type">boolean</span>
+              <span class="prop-value">= {{ produto().emEstoque }}</span>
+            </div>
+          </div>
+          <div class="interface-footer">{{'}}'}}</div>
+        </div>
+
+        <!-- Computed Values -->
+        <div class="computed-section">
+          <h5>Valores Computados</h5>
+          <div class="computed-item">
+            <span class="computed-label">Preço formatado:</span>
+            <span class="computed-value">{{ precoFormatado() }}</span>
+          </div>
+          <div class="computed-item">
+            <span class="computed-label">Status:</span>
+            <span 
+              class="computed-value status-badge"
+              [class.disponivel]="produto().emEstoque"
+              [class.indisponivel]="!produto().emEstoque"
+            >
+              {{ produto().emEstoque ? 'Disponível' : 'Indisponível' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  

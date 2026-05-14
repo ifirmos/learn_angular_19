@@ -20,7 +20,7 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly STORAGE_KEY = 'learn-angular19-theme';
+  private readonly STORAGE_KEY = 'learn-angular21-theme';
   
   // Signal para tema atual (permite componentes reagirem à mudança)
   readonly currentTheme = signal<ThemeName>('midnight');

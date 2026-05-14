@@ -1,0 +1,104 @@
+<div class="demo-grid">
+
+  <!-- 1. Soma -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">reduce → soma</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <div class="pills">
+          @for (n of BASE; track n) {
+            <span class="pill pill--src">{{ n }}</span>
+          }
+        </div>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">(acc, n) =&gt; acc + n</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ soma() }}</span>
+      </div>
+    </div>
+    <p class="tip">.reduce() acumula tudo em UM único valor.</p>
+  </div>
+
+  <!-- 2. Máximo e Mínimo -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">reduce → máx / mín</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <div class="pills">
+          @for (n of BASE; track n) {
+            <span class="pill"
+              [class.pill--keep]="n === maximo() || n === minimo()"
+              [class.pill--src]="n !== maximo() && n !== minimo()">{{ n }}</span>
+          }
+        </div>
+      </div>
+      <div class="rrow">
+        <span class="tag tag--green">max</span>
+        <span class="rval">{{ maximo() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="tag tag--orange">min</span>
+        <span class="rval" style="color:var(--color-state-warning)">{{ minimo() }}</span>
+      </div>
+    </div>
+    <p class="tip">Comparação acumulada: se n &gt; max, n vira o novo max.</p>
+  </div>
+
+  <!-- 3. Contar ocorrências -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">reduce → agrupar</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <div class="pills">
+          @for (l of LETRAS; track $index) {
+            <span class="pill pill--src">{{ l }}</span>
+          }
+        </div>
+      </div>
+      @for (entry of contagemEntries(); track entry[0]) {
+        <div class="rrow">
+          <span class="tag tag--orange">{{ entry[0] }}</span>
+          <span class="rlabel">×</span>
+          <span class="rval">{{ entry[1] }}</span>
+        </div>
+      }
+    </div>
+    <p class="tip">reduce pode construir qualquer tipo: objeto, Map, Set…</p>
+  </div>
+
+  <!-- 4. reduce pode substituir map+filter -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">reduce ⊇ map + filter</code>
+    </div>
+    <div class="dc-result">
+      <div class="step-label">pares dobrados</div>
+      <div class="rrow">
+        <div class="pills">
+          @for (n of BASE; track n) {
+            @if (n % 2 === 0) {
+              <span class="pill pill--keep">{{ n * 2 }}</span>
+            }
+          }
+        </div>
+      </div>
+      <div class="step-label" style="margin-top:.4rem">via reduce</div>
+      <div class="rrow">
+        <span class="rlabel">filter(par).map(×2)</span>
+      </div>
+    </div>
+    <p class="tip">Prefira <code>.filter().map()</code> — mais legível. Use <code>.reduce()</code> quando o resultado é um tipo diferente.</p>
+  </div>
+
+</div>

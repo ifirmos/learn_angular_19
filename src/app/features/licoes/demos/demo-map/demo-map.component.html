@@ -1,0 +1,150 @@
+<div class="map-grid">
+
+  <!-- Card 1: números -->
+  <div class="map-card mc--1">
+    <div class="mc-head">
+      <span class="cn cn--1">1</span>
+      <code class="mc-name">Números</code>
+      <span class="mc-fn">.map(n&nbsp;=&gt;&nbsp;n&nbsp;×&nbsp;fator)</span>
+    </div>
+
+    <div class="ctrl-row">
+      <label class="ctrl-label">fator</label>
+      <input
+        type="number"
+        class="campo campo--sm"
+        [ngModel]="fator()"
+        (ngModelChange)="fator.set(+$event)"
+        min="1"
+        max="20"
+        step="1"
+      />
+    </div>
+
+    <div class="arr-row">
+      <span class="arr-label">original</span>
+      <div class="arr-pills">
+        @for (n of BASE_NUMS; track n) {
+          <span class="pill pill--orig">{{ n }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="arr-arrow">↓ .map(n =&gt; n × {{ fator() }})</div>
+
+    <div class="arr-row">
+      <span class="arr-label">mapped</span>
+      <div class="arr-pills">
+        @for (n of numsMapped(); track $index) {
+          <span class="pill pill--mapped">{{ n }}</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: strings -->
+  <div class="map-card mc--2">
+    <div class="mc-head">
+      <span class="cn cn--2">2</span>
+      <code class="mc-name">Strings</code>
+      <span class="mc-fn">.map(s&nbsp;=&gt;&nbsp;transform)</span>
+    </div>
+
+    <div class="seg-group">
+      <button
+        class="seg"
+        [class.seg--on]="transformacao() === 'upper'"
+        (click)="transformacao.set('upper')"
+      >.toUpperCase()</button>
+      <button
+        class="seg"
+        [class.seg--on]="transformacao() === 'lower'"
+        (click)="transformacao.set('lower')"
+      >.toLowerCase()</button>
+      <button
+        class="seg"
+        [class.seg--on]="transformacao() === 'length'"
+        (click)="transformacao.set('length')"
+      >.length</button>
+    </div>
+
+    <div class="str-list">
+      @for (par of strPairs(); track par.orig) {
+        <div class="str-row">
+          <span class="str-orig">{{ par.orig }}</span>
+          <span class="str-arrow">→</span>
+          <span class="str-result">{{ par.mapped }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Card 3: objetos -->
+  <div class="map-card mc--3">
+    <div class="mc-head">
+      <span class="cn cn--3">3</span>
+      <code class="mc-name">Objetos</code>
+      <span class="mc-fn">.map(p&nbsp;=&gt;&nbsp;{{'{'}}...p{{'}'}})</span>
+    </div>
+
+    <div class="ctrl-row">
+      <label class="ctrl-label">desconto&nbsp;<strong>{{ desconto() }}%</strong></label>
+      <input
+        type="range"
+        class="slider"
+        [ngModel]="desconto()"
+        (ngModelChange)="desconto.set(+$event)"
+        min="0"
+        max="50"
+        step="5"
+      />
+    </div>
+
+    <div class="obj-list">
+      @for (par of prodPairs(); track par.nome) {
+        <div class="obj-row">
+          <span class="obj-name">{{ par.nome }}</span>
+          <span class="obj-old">R$&nbsp;{{ par.precoOrig }}</span>
+          <span class="str-arrow">→</span>
+          <span class="obj-new">R$&nbsp;{{ par.precoNovo }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Card 4: imutabilidade -->
+  <div class="map-card mc--4">
+    <div class="mc-head">
+      <span class="cn cn--4">4</span>
+      <code class="mc-name">Imutabilidade</code>
+      <span class="mc-fn">original inalterado</span>
+    </div>
+
+    <div class="imut-block">
+      <div class="imut-label">original</div>
+      <div class="arr-pills">
+        @for (n of [1, 2, 3]; track n) {
+          <span class="pill pill--orig">{{ n }}</span>
+        }
+      </div>
+
+      <div class="imut-sep">
+        <span class="imut-arrow">↓</span>
+        <code class="imut-fn">.map(n =&gt; n * 2)</code>
+      </div>
+
+      <div class="imut-label">novo array</div>
+      <div class="arr-pills">
+        @for (n of [2, 4, 6]; track n) {
+          <span class="pill pill--mapped">{{ n }}</span>
+        }
+      </div>
+
+      <div class="imut-note">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>original permanece <code>[1, 2, 3]</code></span>
+      </div>
+    </div>
+  </div>
+
+</div>

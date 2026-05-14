@@ -1,0 +1,43 @@
+
+    <div class="demo-grid">
+      <p-card header="Controles" class="card-escuro">
+        <div class="campo">
+          <label for="texto-demo">Texto para interpolar</label>
+          <input
+            id="texto-demo"
+            type="text"
+            pInputText
+            [value]="texto()"
+            (input)="atualizarTexto($any($event.target).value)"
+          />
+        </div>
+
+        <div class="campo">
+          <label for="slider-demo">Tamanho da fonte (px)</label>
+          <p-slider
+            inputId="slider-demo"
+            [min]="14"
+            [max]="40"
+            [step]="1"
+            [ngModel]="tamanhoFonte()"
+            (onChange)="atualizarTamanho($any($event.value))"
+          ></p-slider>
+          <div class="valor-slider">{{ tamanhoFonte() }} px</div>
+        </div>
+      </p-card>
+
+      <p-card header="Visual" class="card-escuro">
+        <div class="preview">
+          <p-tag value="Interpolação" severity="info"></p-tag>
+          <h2 [style.fontSize.px]="tamanhoFonte()">{{ texto() }}</h2>
+          <p>
+            Aqui você vê <strong>interpolação</strong> ({{ texto() }}) e <strong>property binding</strong> no tamanho da fonte
+            ([style.fontSize.px]="tamanhoFonte()").
+          </p>
+          <p class="dica">
+            Experimente digitar um novo texto ou mover o slider para sentir a reatividade com signals.
+          </p>
+        </div>
+      </p-card>
+    </div>
+  

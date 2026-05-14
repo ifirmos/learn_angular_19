@@ -1,0 +1,148 @@
+
+    <div class="demo-editor-preview">
+      <!-- Editor Side -->
+      <div class="editor-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <h4>Editor</h4>
+        </div>
+        
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="titulo">Título do Curso</label>
+            <input 
+              id="titulo"
+              type="text" 
+              class="input-field"
+              [ngModel]="titulo()"
+              (ngModelChange)="titulo.set($event)"
+              placeholder="Ex: Angular Fundamentals"
+            />
+          </div>
+
+          <!-- NOVO: Descrição -->
+          <div class="control-group">
+            <label for="descricao">Descrição Curta</label>
+            <input 
+              id="descricao"
+              type="text" 
+              class="input-field"
+              [ngModel]="descricao()"
+              (ngModelChange)="descricao.set($event)"
+              placeholder="Uma breve descrição..."
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="nivel">Nível</label>
+            <select 
+              id="nivel"
+              class="input-field"
+              [ngModel]="nivel()"
+              (ngModelChange)="nivel.set($event)"
+            >
+              <option value="Iniciante">Iniciante</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Avançado">Avançado</option>
+            </select>
+          </div>
+
+          <div class="control-group control-row">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [ngModel]="isNovo()"
+                (ngModelChange)="isNovo.set($event)"
+              />
+              <span>Badge "NOVO"</span>
+            </label>
+          </div>
+
+           <!-- NOVO: Tema -->
+           <div class="control-group control-row">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [ngModel]="tema() === 'dark'"
+                (ngModelChange)="alternarTema()"
+              />
+              <span>Modo Escuro</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Preview Side -->
+      <div class="preview-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <h4>Preview</h4>
+        </div>
+
+        <!-- Card do Curso com Tema Dinâmico -->
+        <div 
+          class="curso-card-preview"
+          [class.theme-dark]="tema() === 'dark'"
+          [style.borderColor]="tema() === 'dark' ? '#374151' : '#e5e7eb'"
+        >
+          <!-- Badge NOVO (Controle de Fluxo @if) -->
+          @if (isNovo()) {
+            <span class="badge-novo">NOVO</span>
+          }
+          
+          <!-- Botão Favorito (Event Binding + Property Binding) -->
+          <button 
+            class="btn-favorito" 
+            [class.ativo]="favorito()"
+            (click)="toggleFavorito()"
+            title="Adicionar aos favoritos"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+
+          <!-- Título (Interpolação) -->
+          <h3 class="curso-titulo">{{ titulo() || 'Título do Curso' }}</h3>
+          
+          <!-- Descrição (Interpolação) -->
+          <p class="curso-descricao">{{ descricao() || 'Sem descrição.' }}</p>
+
+          <!-- Badges Row -->
+          <div class="curso-badges">
+            <span 
+              class="badge-nivel"
+              [class.iniciante]="nivel() === 'Iniciante'"
+              [class.intermediario]="nivel() === 'Intermediário'"
+              [class.avancado]="nivel() === 'Avançado'"
+            >
+              {{ nivel() }}
+            </span>
+            
+            <span class="curso-duracao">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ cargaHoraria() }} min
+            </span>
+          </div>
+
+          <div class="card-footer">
+             <span class="status-indicator" [class.favorite-active]="favorito()">
+               {{ favorito() ? 'Adicionado aos favoritos' : 'Adicione aos favoritos' }}
+             </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  

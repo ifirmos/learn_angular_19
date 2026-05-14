@@ -1,0 +1,62 @@
+
+    <div class="demo-event">
+      <div class="editor-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <h4>Interaja</h4>
+        </div>
+        
+        <div class="buttons-grid">
+          <button class="action-btn increment" (click)="incrementar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Incrementar
+          </button>
+          
+          <button class="action-btn decrement" (click)="decrementar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Decrementar
+          </button>
+          
+          <button class="action-btn reset" (click)="resetar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            Resetar
+          </button>
+        </div>
+
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="preview-side">
+        <div class="side-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <h4>Contador</h4>
+        </div>
+
+        <div class="counter-display">
+          <span class="counter-value" [class.positive]="contador() > 0" [class.negative]="contador() < 0">
+            {{ contador() }}
+          </span>
+          <span class="counter-label">cliques</span>
+        </div>
+
+        <div class="history">
+          <span class="history-label">Histórico:</span>
+          <div class="history-items">
+            @for (acao of historico(); track $index) {
+              <span class="history-item" [class]="acao.tipo">{{ acao.texto }}</span>
+            }
+            @empty {
+              <span class="history-empty">Nenhuma ação ainda</span>
+            }
+          </div>
+        </div>
+
+        <div class="info-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Os parênteses <code>(evento)</code> capturam ações do usuário e chamam métodos.</span>
+        </div>
+      </div>
+    </div>
+  

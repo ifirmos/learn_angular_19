@@ -1,85 +1,15 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 export type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
 export type BadgeSize = 'sm' | 'md';
 
-/**
- * UiBadgeComponent - Componente primitivo de badge
- * 
- * Usado para exibir status, categorias, níveis, etc.
- * Usa cores de estado semânticas do design system.
- */
 @Component({
   selector: 'app-ui-badge',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <span
-      class="ui-badge"
-      [class]="'ui-badge--' + variant + ' ui-badge--' + size"
-    >
-      <ng-content></ng-content>
-    </span>
-  `,
-  styles: [`
-    .ui-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-family-sans);
-      font-weight: var(--font-weight-medium);
-      border-radius: var(--radius-full);
-      white-space: nowrap;
-      border: 1px solid transparent;
-    }
-
-    /* Sizes */
-    .ui-badge--sm {
-      padding: var(--spacing-1) var(--spacing-2);
-      font-size: var(--font-size-caption);
-      line-height: var(--line-height-caption);
-    }
-
-    .ui-badge--md {
-      padding: var(--spacing-1) var(--spacing-3);
-      font-size: var(--font-size-body);
-      line-height: var(--line-height-body);
-    }
-
-    /* Variants */
-    .ui-badge--default {
-      background-color: var(--color-bg-surface-alt);
-      color: var(--color-text-primary);
-      border-color: var(--color-border-default);
-    }
-
-    .ui-badge--success {
-      background-color: rgba(34, 197, 94, 0.15);
-      color: var(--color-state-success);
-      border-color: var(--color-state-success);
-    }
-
-    .ui-badge--warning {
-      background-color: rgba(249, 115, 22, 0.15);
-      color: var(--color-state-warning);
-      border-color: var(--color-state-warning);
-    }
-
-    .ui-badge--error {
-      background-color: rgba(239, 68, 68, 0.15);
-      color: var(--color-state-error);
-      border-color: var(--color-state-error);
-    }
-
-    .ui-badge--info {
-      background-color: rgba(59, 130, 246, 0.15);
-      color: var(--color-state-info);
-      border-color: var(--color-state-info);
-    }
-  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './ui-badge.component.html',
+  styleUrl: './ui-badge.component.scss',
 })
 export class UiBadgeComponent {
-  @Input() variant: BadgeVariant = 'default';
-  @Input() size: BadgeSize = 'md';
+  readonly variant = input<BadgeVariant>('default');
+  readonly size = input<BadgeSize>('md');
 }

@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { TrilhasDataSource } from '../data-access/trilhas.datasource';
 import { ProgressRepository } from '../data-access/progress.repository';
 import { Trilha } from '../../shared/models/trilha.model';
@@ -6,6 +6,8 @@ import { Licao } from '../../shared/models/licao.model';
 
 @Injectable({ providedIn: 'root' })
 export class TrilhasStore {
+  private readonly dataSource = inject(TrilhasDataSource);
+  private readonly progressRepo = inject(ProgressRepository);
   private readonly trilhasSignal = signal<Trilha[]>([]);
   private readonly licoesSignal = signal<Licao[]>([]);
   private readonly conclusoesPorLicao = signal<Record<string, boolean>>({});
@@ -25,10 +27,7 @@ export class TrilhasStore {
     return Math.round((concluidas / total) * 100);
   });
 
-  constructor(
-    private readonly dataSource: TrilhasDataSource,
-    private readonly progressRepo: ProgressRepository,
-  ) {}
+  constructor() {}
 
   async inicializar(): Promise<void> {
     const [trilhas, licoes] = await Promise.all([
@@ -68,11 +67,23 @@ export class TrilhasStore {
     return this.licoesSignal().find((l) => l.id === id);
   }
 
+  obterTrilha(id: string): Trilha | undefined {
+    return this.trilhasSignal().find((t) => t.id === id);
+  }
+
   marcarLicaoConcluida(licaoId: string, concluida: boolean): void {
     this.conclusoesPorLicao.update((m) => {
       const atualizado = { ...m, [licaoId]: concluida };
       this.progressRepo.salvar(atualizado);
       return atualizado;
     });
+  }
+
+  toggleConclusao(licaoId: string): void {
+    const licao = this.obterLicao(licaoId);
+    if (licao) {
+      const estadoAtual = this.conclusoesPorLicao()[licaoId] ?? licao.concluida;
+      this.marcarLicaoConcluida(licaoId, !estadoAtual);
+    }
   }
 }

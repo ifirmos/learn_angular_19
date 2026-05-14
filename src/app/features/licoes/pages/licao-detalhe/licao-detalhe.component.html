@@ -1,0 +1,159 @@
+
+    @if (licao(); as licaoAtual) {
+      <div class="licao-container">
+        <!-- Header da Lição -->
+        <header class="licao-header">
+          <div class="header-breadcrumb">
+            <a [routerLink]="['/trilhas', licaoAtual.trilhaId]" class="back-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              Voltar à trilha
+            </a>
+            <span class="lesson-position">Lição {{ licaoAtual.ordem }} de {{ totalLicoes() }}</span>
+          </div>
+          
+          <div class="header-top">
+            <div class="badges">
+              <span class="badge-nivel" [class]="'badge-nivel--' + licaoAtual.nivel">{{ licaoAtual.nivel }}</span>
+              @if (licaoAtual.tipoLicao === 'sintese') {
+                <span class="badge-sintese">SÍNTESE</span>
+              }
+            </div>
+            <span class="duration">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {{ licaoAtual.tempoEstimadoMinutos }} min
+            </span>
+          </div>
+          <h1 class="licao-title">{{ licaoAtual.titulo }}</h1>
+          <p class="licao-description">{{ licaoAtual.descricaoCurta }}</p>
+        </header>
+
+        <!-- SEÇÃO TEORIA (antes dos 3 painéis) -->
+        @if (licaoAtual.conteudoTeoria) {
+          <section class="teoria-section" id="teoria">
+            <div class="teoria-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <h2>Teoria</h2>
+            </div>
+
+            <!-- Introdução -->
+            <div class="teoria-intro">
+              <p>{{ licaoAtual.conteudoTeoria.introducao }}</p>
+            </div>
+
+            <!-- Subtópicos -->
+            <div class="teoria-subtopicos">
+              @for (subtopico of licaoAtual.conteudoTeoria.subtopicos; track subtopico.titulo) {
+                <div class="subtopico-card">
+                  <h3>{{ subtopico.titulo }}</h3>
+                  <p>{{ subtopico.conteudo }}</p>
+                  @if (subtopico.codigoExemplo) {
+                    <pre class="codigo-exemplo"><code>{{ subtopico.codigoExemplo }}</code></pre>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Analogia -->
+            <div class="analogia-card">
+              <div class="analogia-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <h3>{{ licaoAtual.conteudoTeoria.analogia.titulo }}</h3>
+              </div>
+              <p>{{ licaoAtual.conteudoTeoria.analogia.descricao }}</p>
+            </div>
+
+            <!-- Link para demo -->
+            <a href="#pratica" class="ir-para-demo">
+              <span>Ir para a demonstração interativa</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </a>
+          </section>
+        }
+
+        <!-- SEÇÃO PRÁTICA (3 Painéis) -->
+        <section class="pratica-section" id="pratica">
+          <div class="pratica-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <h2>Prática</h2>
+          </div>
+
+          <div class="licao-layout" [class.layout-wide]="licaoAtual.layout === 'demo-largura-total'">
+            <!-- 1. Painel Explicação -->
+            <!-- 1. Painel Explicação -->
+            @if (licaoAtual.configuracaoDemo) {
+              <app-licao-explicacao 
+                [config]="licaoAtual.configuracaoDemo"
+                class="explicacao-wrapper"
+              ></app-licao-explicacao>
+            }
+
+            <!-- 2. Painel Código -->
+            <section class="panel panel-codigo">
+              <div class="panel-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <h3>Código</h3>
+              </div>
+              <div class="panel-content terminal-wrapper">
+                <app-code-terminal [files]="codeFiles()"></app-code-terminal>
+              </div>
+            </section>
+
+            <!-- 3. Painel Demo -->
+            <section class="panel panel-demo">
+              <div class="panel-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <h3>Demo Interativa</h3>
+              </div>
+              <div class="panel-content">
+                <div class="demo-wrapper">
+                  <ng-container #demoContainer></ng-container>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Footer: Navegação + CTA -->
+        <footer class="licao-footer">
+          <div class="nav-buttons">
+            <button 
+              class="btn-nav btn-anterior"
+              [disabled]="!licaoAnterior()"
+              (click)="navegarParaLicao(licaoAnterior())"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              Lição anterior
+            </button>
+            
+            <button 
+              class="btn-concluir" 
+              (click)="marcarComoConcluida()"
+              [class.concluida]="licaoAtual.concluida"
+            >
+              @if (!licaoAtual.concluida) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              }
+              @if (licaoAtual.concluida) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              }
+              {{ licaoAtual.concluida ? 'Concluída!' : 'Marcar como concluída' }}
+            </button>
+
+            <button 
+              class="btn-nav btn-proxima"
+              [disabled]="!licaoProxima()"
+              (click)="navegarParaLicao(licaoProxima())"
+            >
+              Próxima lição
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </footer>
+      </div>
+    } @else {
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Carregando lição...</p>
+      </div>
+    }
+  

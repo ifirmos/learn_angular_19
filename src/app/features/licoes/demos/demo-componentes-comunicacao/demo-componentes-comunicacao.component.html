@@ -1,0 +1,84 @@
+<div class="demo-grid">
+
+  <!-- 1. Painel PAI - controla inputs -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">P</span>
+      <code class="dc-name">Componente Pai</code>
+      <span class="dc-hint">controla os dados</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Título:</span>
+      <input class="campo" [ngModel]="titulo()" (ngModelChange)="titulo.set($event)">
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Preço:</span>
+      <input class="campo campo--sm" type="number" min="0"
+             [ngModel]="preco()" (ngModelChange)="preco.set(+$event)">
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Estoque:</span>
+      <input class="campo campo--xs" type="number" min="0"
+             [ngModel]="estoque()" (ngModelChange)="estoque.set(+$event)">
+    </div>
+    <p class="tip">O pai mantém o estado e passa dados para baixo via <code>[input]</code>.</p>
+  </div>
+
+  <!-- 2. Painel FILHO - recebe inputs, emite outputs -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">F</span>
+      <code class="dc-name">Componente Filho</code>
+      <span class="dc-hint">recebe + emite</span>
+    </div>
+    <div class="filho-card">
+      <div class="filho-title">{{ titulo() }}</div>
+      <div class="filho-meta">
+        <span class="tag tag--green">R$ {{ preco() }}</span>
+        <span class="tag" [class.tag--blue]="estoque() > 0" [class.tag--red]="estoque() === 0">
+          {{ estoque() > 0 ? estoque() + ' em estoque' : 'Esgotado' }}
+        </span>
+      </div>
+      <button class="btn btn--ok" [disabled]="estoque() === 0" (click)="simularCompra()">
+        Comprar
+      </button>
+    </div>
+    <p class="tip">O filho emite eventos (<code>output()</code>) sem conhecer o pai.</p>
+  </div>
+
+  <!-- 3. output() – log de eventos -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">output() — eventos</code>
+      <span class="dc-hint">filho → pai</span>
+    </div>
+    <div class="dc-result">
+      <div class="step-label">eventos recebidos</div>
+      <div class="log-list">
+        @for (e of comprasLog(); track $index) {
+          <span class="log-item">{{ e }}</span>
+        } @empty {
+          <span class="log-empty">Clique em "Comprar" no filho</span>
+        }
+      </div>
+    </div>
+    <p class="tip">O pai ouve <code>(comprar)="onCompra($event)"</code> e reage ao evento.</p>
+  </div>
+
+  <!-- 4. Código de uso -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">input() obrigatório vs opcional</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="tag tag--cyan">input.required&lt;T&gt;()</span><span class="rlabel">erro em compile-time se não fornecido</span></div>
+      <div class="rrow"><span class="tag tag--blue">input&lt;T&gt;(default)</span><span class="rlabel">opcional com valor padrão</span></div>
+      <div class="rrow"><span class="tag tag--green">output&lt;T&gt;()</span><span class="rlabel">emite eventos tipados</span></div>
+      <div class="rrow"><span class="tag tag--orange">output&lt;void&gt;()</span><span class="rlabel">sem payload</span></div>
+    </div>
+    <p class="tip">inputs são <em>somente leitura</em> no filho — nunca os modifique diretamente.</p>
+  </div>
+
+</div>

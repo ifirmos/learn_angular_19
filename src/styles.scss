@@ -1,17 +1,205 @@
+/**
+ * Design System - Learn Angular 21
+ * Tokens globais para tema Midnight (dark default)
+ */
+
+/* ============================================
+   FONTES - Google Fonts
+   ============================================ */
+/* Fonts are loaded via <link> in index.html */
+
 :root {
-  --fundo: #0f172a;
-  --superficie: #111827;
-  --borda: #1f2937;
-  --texto: #e5e7eb;
+  /* ============================================
+     CORES - Tema Midnight (Dark)
+     ============================================ */
+  
+  /* Backgrounds */
+  --color-bg-body: #020617;
+  --color-bg-surface: #0F172A;
+  --color-bg-surface-alt: #111827;
+  
+  /* Texto */
+  --color-text-primary: #E5E7EB;
+  --color-text-secondary: #9CA3AF;
+  --color-text-inverse: #F9FAFB;
+  
+  /* Bordas */
+  --color-border-default: #1F2937;
+  
+  /* Accent */
+  --color-accent-primary: #22D3EE;
+  --color-accent-primary-10: rgba(34, 211, 238, 0.1);
+  --color-accent-primary-20: rgba(34, 211, 238, 0.2);
+  --color-accent-muted: #38BDF8;
+  
+  /* Estados */
+  --color-state-success: #22C55E;
+  --color-state-success-10: rgba(34, 197, 94, 0.1);
+  --color-state-warning: #F97316;
+  --color-state-warning-10: rgba(249, 115, 22, 0.1);
+  --color-state-error: #EF4444;
+  --color-state-error-10: rgba(239, 68, 68, 0.1);
+  --color-state-info: #3B82F6;
+  --color-state-info-10: rgba(59, 130, 246, 0.1);
+
+  /* Legacy aliases (compatibilidade) */
+  --fundo: var(--color-bg-body);
+  --superficie: var(--color-bg-surface);
+  --borda: var(--color-border-default);
+  --texto: var(--color-text-primary);
+
+  /* ============================================
+     TIPOGRAFIA
+     ============================================ */
+  
+  --font-family-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Tamanhos */
+  --font-size-display: 2rem;
+  --font-size-h1: 1.5rem;
+  --font-size-h2: 1.25rem;
+  --font-size-h3: 1.125rem;
+  --font-size-h4: 1rem;
+  --font-size-body: 1rem;
+  --font-size-caption: 0.8125rem;
+  --font-size-code: 0.875rem;
+  
+  /* Line Heights */
+  --line-height-display: 2.5rem;
+  --line-height-h1: 2rem;
+  --line-height-h2: 1.75rem;
+  --line-height-body: 1.5rem;
+  --line-height-caption: 1.125rem;
+  
+  /* Pesos */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ============================================
+     ESPAÇAMENTOS
+     ============================================ */
+  
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  /* ============================================
+     RAIOS DE BORDA
+     ============================================ */
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ============================================
+     SOMBRAS
+     ============================================ */
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
+
+  /* ============================================
+     TRANSIÇÕES
+     ============================================ */
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+
+/* ============================================
+   ESTILOS BASE
+   ============================================ */
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: var(--fundo);
-  color: var(--texto);
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--color-bg-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================
+   UTILITÁRIOS - INLINE CODE
+   ============================================ */
+
+.inline-code,
+code:not([class*="language-"]) {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-caption);
+  background-color: var(--color-bg-surface-alt);
+  color: var(--color-accent-primary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+}
+
+/* Reset: code inside pre must never inherit the inline-code pill style */
+pre code:not([class*="language-"]) {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ============================================
+   UTILITÁRIOS - BADGES
+   ============================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge--iniciante {
+  background-color: var(--color-state-success-10);
+  color: var(--color-state-success);
+}
+
+.badge--intermediario {
+  background-color: var(--color-state-warning-10);
+  color: var(--color-state-warning);
+}
+
+.badge--avancado {
+  background-color: var(--color-state-error-10);
+  color: var(--color-state-error);
+}
+
+.badge--novo {
+  background-color: var(--color-accent-primary-10);
+  color: var(--color-accent-primary);
 }

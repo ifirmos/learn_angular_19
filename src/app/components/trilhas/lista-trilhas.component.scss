@@ -1,0 +1,52 @@
+
+      :host {
+        display: block;
+      }
+
+      .cabecalho-lista {
+        margin-bottom: 1.25rem;
+      }
+
+      .subtitulo {
+        color: #22d3ee;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .descricao {
+        margin: 0.25rem 0 0;
+        color: #cbd5e1;
+        max-width: 720px;
+      }
+
+      .lista-trilhas {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .card-trilha ::ng-deep .p-card {
+        background: #111827;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .detalhes {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 0.5rem 0 1rem;
+        color: #cbd5e1;
+      }
+
+      .acoes {
+        display: flex;
+        justify-content: flex-end;
+      }
+    

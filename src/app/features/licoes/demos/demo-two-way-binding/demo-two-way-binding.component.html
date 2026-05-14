@@ -1,0 +1,94 @@
+<div class="demo-grid">
+
+  <!-- 1. [(ngModel)] básico -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">[(ngModel)]</code>
+      <span class="dc-hint">açúcar sintático</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo" [(ngModel)]="nomeModel" placeholder="Digite seu nome…">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">nomeModel</span>
+        <span class="arrow">→</span>
+        <span class="rval">'{{ nomeModel }}'</span>
+      </div>
+    </div>
+    <p class="tip">O <code>[(banana-in-a-box)]</code> combina <code>[property binding]</code> e <code>(event binding)</code> em um só.</p>
+  </div>
+
+  <!-- 2. Sintaxe explícita equivalente -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">[ngModel] + (ngModelChange)</code>
+      <span class="dc-hint">equivalente explícito</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo"
+             [ngModel]="textoManual"
+             (ngModelChange)="textoManual = $event"
+             placeholder="Explícito…">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">textoManual</span>
+        <span class="arrow">→</span>
+        <span class="rval">'{{ textoManual }}'</span>
+      </div>
+    </div>
+    <p class="tip">Útil quando você precisa interceptar o valor antes de atribuir: <code>(ngModelChange)="onMuda($event)"</code></p>
+  </div>
+
+  <!-- 3. Number input -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">type="number"</code>
+      <span class="dc-hint">two-way numérico</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo campo--sm" type="number" min="1" max="120" [(ngModel)]="idadeModel">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">idadeModel</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ idadeModel }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">typeof</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ idadeModel.constructor?.name ?? 'number' }}</span>
+      </div>
+    </div>
+    <p class="tip">Angular converte para <code>number</code> automaticamente com <code>type="number"</code>.</p>
+  </div>
+
+  <!-- 4. Select two-way -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">&lt;select [(ngModel)]&gt;</code>
+      <span class="dc-hint">select two-way</span>
+    </div>
+    <div class="ctrl-row">
+      <select class="campo" [(ngModel)]="nivelModel">
+        @for (nivel of nivelList; track nivel) {
+          <option [value]="nivel">{{ nivel }}</option>
+        }
+      </select>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">selecionado:</span>
+        <span class="tag tag--blue">{{ nivelModel }}</span>
+      </div>
+    </div>
+    <p class="tip">Funciona com <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code> e inputs customizados que implementam <code>ControlValueAccessor</code>.</p>
+  </div>
+
+</div>

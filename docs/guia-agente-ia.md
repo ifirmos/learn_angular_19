@@ -1,6 +1,6 @@
 # Guia permanente para o agente de IA
 
-*Plataforma Educacional Angular 19*
+*Plataforma Educacional Angular 21*
 
 ## 1. Propósito deste guia
 
@@ -27,7 +27,7 @@ O agente deve sempre considerar, nesta ordem de prioridade:
 
 2. **Documento de Arquitetura**
 
-   * Arquivo de referência de arquitetura endurecida da Plataforma Educacional Angular 19.
+   * Arquivo de referência de arquitetura endurecida da Plataforma Educacional Angular 21.
    * Define organização de pastas, modelos, stores, data sources, design system, rotas e fluxo geral.
 
 3. **Este Guia do Agente de IA**
@@ -56,7 +56,7 @@ Se houver conflito entre qualquer artefato e o **Codex**, o agente deve sinaliza
 
 1. **A plataforma é educacional** sobre Angular, não um sistema genérico.
 
-2. O público é desenvolvedor que está **aprendendo ou consolidando** Angular 19.
+2. O público é desenvolvedor que está **aprendendo ou consolidando** Angular 21.
 
 3. Cada lição deve ser sempre:
 
@@ -71,19 +71,24 @@ Se houver conflito entre qualquer artefato e o **Codex**, o agente deve sinaliza
 
 1. A stack principal é:
 
-   * Angular 19 (standalone, sem NgModules),
-   * PrimeNG 19,
-   * Signals/computed para estado reativo.
+   * Angular 21 (standalone por padrão, zoneless por padrão, sem NgModules),
+   * PrimeNG 21,
+   * Signals/computed/linkedSignal para estado reativo.
 
 2. O agente deve usar:
 
    * `bootstrapApplication` em `main.ts`,
-   * `provideRouter` e `provideAnimations` no `app.config.ts`.
+   * `provideRouter` e `providePrimeNG({ theme: { preset: Aura } })` no `app.config.ts`.
+   * **Não** usar `provideAnimations` nem `provideAnimationsAsync` — o PrimeNG 21 usa animações CSS nativas.
 
 3. Deve-se preferir:
 
-   * **componentes standalone**,
-   * Novo fluxo de controle (`@if`, `@for`),
+   * Componentes sem `standalone: true` (são standalone por padrão no Angular 21),
+   * `inject()` em vez de injeção por construtor: `private service = inject(MyService)`,
+   * `input()` e `output()` em vez de `@Input()` / `@Output()`,
+   * `changeDetection: ChangeDetectionStrategy.OnPush` em **todo** componente,
+   * Novo fluxo de controle (`@if`, `@for`, `@switch`),
+   * `@defer` para demos interativas pesadas,
    * Serviços injetáveis leves para estado (`Stores`).
 
 4. Não introduzir:
@@ -107,6 +112,28 @@ Se houver conflito entre qualquer artefato e o **Codex**, o agente deve sinaliza
 
 3. **Nunca criar** pastas grandes genéricas como `src/app/services`, `src/app/components` para coisas novas, se já existe a estrutura `core/shared/features`.
 
+### 3.5. Sobre o uso dos servidores MCP
+
+O repositório possui dois servidores MCP configurados em `.vscode/mcp.json`:
+
+**`@angular/cli` MCP** – use antes de criar componente, serviço, guard ou pipe:
+
+* Garante scaffold correto via `ng generate`.
+* Não crie arquivos manualmente se o CLI MCP puder gerar o esqueleto.
+
+**`@primeng/mcp`** – consulte **antes** de usar qualquer componente PrimeNG:
+
+* `list_components` — antes de escolher qual componente usar.
+* `get_component_props` — verificar props e tipos disponíveis.
+* `get_component_tokens` — tokens de theming por componente.
+* `get_usage_example` — exemplos de uso reais.
+* `migrate_v20_to_v21` — ao refatorar código legado PrimeNG.
+* `suggest_component` — "preciso de um date picker, qual usar?".
+
+**Regra**: se o MCP retornar uma API diferente do que consta nos docs internos, **o MCP tem precedência**.
+
+---
+
 ### 3.4. Sobre didática e legibilidade
 
 1. O código deve ser **pedagógico**:
@@ -121,6 +148,13 @@ Se houver conflito entre qualquer artefato e o **Codex**, o agente deve sinaliza
 
 3. Ao refatorar, sempre perguntar:
    “Isso deixa o código **mais fácil de ensinar** para alguém que está aprendendo Angular?”
+
+4. **Todo demo deve usar o padrão play + code lado a lado** (ver Seção 11 do documento de arquitetura):
+
+   * A interação e o resultado ficam no painel esquerdo (`.block-play`).
+   * O código TypeScript e HTML correspondentes ficam no painel direito (`.block-code`), **dentro do mesmo bloco**, visíveis simultaneamente à interação.
+   * Os valores dentro do código devem ser **Angular interpolation real** (`{{ signal() }}`), não strings estáticas — assim o aluno vê o código e o resultado atualizarem juntos.
+   * **Nunca** deixar o código apenas no painel externo (`codeChange`): com `layout: 'demo-largura-total'`, esse painel fica fora do campo visual quando o aluno interage com o demo.
 
 ---
 
@@ -209,7 +243,7 @@ Isso se divide em um conjunto de subpassos:
 3. Criar `ProgressRepository` e `LocalStorageProgressRepository`:
 
    * Armazenando um dicionário simples: `{ [licaoId: string]: boolean }`,
-   * Usando uma chave clara, ex.: `"learn-angular19-progress"`.
+   * Usando uma chave clara, ex.: `"learn-angular21-progress"`.
 
 4. Não é necessário carregar uma grande base de trilhas neste passo; o objetivo é ter o esqueleto pronto e funcional com pelo menos:
 
@@ -266,7 +300,7 @@ Depois de concluído o “próximo passo imediato” acima, o agente deve seguir
 
 2. **Consolidar a Trilha “Fundamentos Angular”**
 
-   * Componentes standalone, ciclo de template, DI básica, roteamento com `provideRouter`.
+   * Componentes (standalone por padrão no Angular 21, sem `standalone: true`), ciclo de template, DI com `inject()`, roteamento com `provideRouter`.
 
 3. **Criar Trilha de “Bindings Essenciais”**
 
@@ -341,10 +375,17 @@ Para mudanças grandes (refatorações, introdução de novas libs, mudanças de
 * **Codex**: documento de briefing original da plataforma, definindo visão, público-alvo, tom, conceitos-chave (trilhas, lições, demos).
 * **Trilha**: agrupamento de lições sobre um tema (ex.: Fundamentos TS, Signals, Formulários).
 * **Lição**: unidade mínima de conteúdo. Possui explicação, código e demo.
-* **Demo**: componente standalone, interativo, usado na terceira região da página de lição.
+* **Demo**: componente interativo, usado na terceira região da página de lição.
 * **Store**: serviço que encapsula estado reativo via `signal`/`computed` (ex.: `TrilhasStore`).
 * **DataSource**: classe responsável por fornecer dados (mock ou API) para o domínio.
 * **ProgressRepository**: abstração de persistência de progresso (localStorage hoje, backend amanhã).
+* **`linkedSignal`**: signal writable cujo valor é recomputado quando um signal-fonte muda. Use para estado dependente (ex.: lição selecionada ao mudar de trilha).
+* **`resource` / `rxResource`**: primitivos para dados assíncronos reativos — `resource()` aceita Promise, `rxResource()` aceita Observable. Ambos são experimentais no Angular 21.
+* **`effect`**: efeito colateral disparado quando signals mudam. Use apenas para I/O (logs, DOM, storage). **Nunca** para derivar estado — use `computed()` para isso.
+* **`toSignal` / `toObservable`**: ponte RxJS ↔ Signals via `@angular/core/rxjs-interop`.
+* **`afterNextRender` / `afterEveryRender`**: substitutos de `ngAfterViewInit` para operações de DOM (sem Zone.js).
+* **`DestroyRef` + `takeUntilDestroyed()`**: padrão moderno para cancelar subscriptions sem `ngOnDestroy`.
+* **MCP**: Model Context Protocol. Servidor que expõe APIs de ferramentas ao agente. Ver Secão 3.5.
 
 ---
 

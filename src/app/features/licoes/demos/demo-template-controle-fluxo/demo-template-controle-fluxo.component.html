@@ -1,0 +1,100 @@
+<div class="demo-grid">
+
+  <!-- 1. @if / @else -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">&#64;if / &#64;else</code>
+      <span class="dc-hint">condicional</span>
+    </div>
+    <div class="toggle-wrap">
+      <label class="toggle-label">
+        <input class="toggle-chk" type="checkbox"
+               [ngModel]="mostrar()" (ngModelChange)="mostrar.set($event)">
+        <div class="toggle-track" [class.is-on]="mostrar()">
+          <div class="toggle-knob"></div>
+        </div>
+      </label>
+      <span class="toggle-val" [class.is-on]="mostrar()">{{ mostrar() ? 'mostrar' : 'ocultar' }}</span>
+    </div>
+    <div class="dc-result">
+      @if (mostrar()) {
+        <div class="rrow"><span class="tag tag--green">visível</span><span class="rlabel">renderizado no DOM</span></div>
+      } @else {
+        <div class="rrow"><span class="tag tag--red">oculto</span><span class="rlabel">removido do DOM</span></div>
+      }
+    </div>
+    <p class="tip"><code>&#64;if</code> remove/insere o elemento. Diferente de <code>[hidden]</code> que só esconde.</p>
+  </div>
+
+  <!-- 2. @for com track -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">&#64;for (item of lista; track item)</code>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo" [ngModel]="novoItem()" (ngModelChange)="novoItem.set($event)"
+             placeholder="Novo item…" (keyup.enter)="addItem()">
+      <button class="btn btn--ok btn--sm" (click)="addItem()">+</button>
+    </div>
+    <div class="dc-result">
+      @for (item of itens(); track item; let i = $index) {
+        <div class="rrow">
+          <span class="cn cn--2" style="font-size:10px">{{ i }}</span>
+          <span class="rlabel" style="flex:1">{{ item }}</span>
+          <button class="btn btn--danger btn--sm" (click)="removeItem(i)">✕</button>
+        </div>
+      } @empty {
+        <div class="rrow"><span class="log-empty">Lista vazia — adicione itens!</span></div>
+      }
+    </div>
+  </div>
+
+  <!-- 3. @switch -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">&#64;switch / &#64;case / &#64;default</code>
+    </div>
+    <div class="seg-group">
+      @for (s of statusList; track s) {
+        <button class="seg" [class.seg--on]="status() === s" (click)="status.set(s)">{{ s }}</button>
+      }
+    </div>
+    <div class="dc-result">
+      @switch (status()) {
+        @case ('ativo') {
+          <div class="rrow"><span class="tag tag--green">● Ativo</span><span class="rlabel">sistema operacional</span></div>
+        }
+        @case ('pausado') {
+          <div class="rrow"><span class="tag tag--orange">⏸ Pausado</span><span class="rlabel">aguardando retomada</span></div>
+        }
+        @case ('erro') {
+          <div class="rrow"><span class="tag tag--red">✕ Erro</span><span class="rlabel">requer atenção</span></div>
+        }
+        @default {
+          <div class="rrow"><span class="rlabel">Estado desconhecido</span></div>
+        }
+      }
+    </div>
+    <p class="tip">Use <code>&#64;switch</code> para múltiplas alternativas exclusivas em vez de <code>&#64;if/&#64;else if</code> encadeados.</p>
+  </div>
+
+  <!-- 4. track e @empty -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">track + &#64;empty</code>
+      <span class="dc-hint">performance</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="tag tag--blue">track item</span><span class="rlabel">rastreia por valor</span></div>
+      <div class="rrow"><span class="tag tag--blue">track item.id</span><span class="rlabel">rastreia por identidade</span></div>
+      <div class="rrow"><span class="tag tag--orange">track $index</span><span class="rlabel">apenas se os itens não têm id único</span></div>
+      <div class="rrow"><span class="tag tag--green">&#64;empty</span><span class="rlabel">renderizado quando a lista é vazia</span></div>
+    </div>
+    <p class="tip"><code>track</code> é obrigatório no <code>&#64;for</code>. Sem ele, Angular não consegue otimizar a reconciliação do DOM.</p>
+  </div>
+
+</div>

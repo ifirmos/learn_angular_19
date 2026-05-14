@@ -1,0 +1,183 @@
+
+    <div class="demo-interpolacao">
+
+      <!-- CABEÇALHO -->
+      <div class="demo-header">
+        <div class="sintaxe-badge">
+          <span class="sb-tag">&lt;p&gt;</span>
+          <span class="sb-brace">{{'{{'}}</span>
+          <span class="sb-expr"> expressão </span>
+          <span class="sb-brace">{{'}}'}}</span>
+          <span class="sb-tag">&lt;/p&gt;</span>
+        </div>
+        <p class="demo-desc">
+          Tudo entre <code class="code-inline">{{'{{ }}'}}</code> é avaliado como
+          JavaScript e renderizado no HTML. Interaja e observe o código ao lado atualizar.
+        </p>
+      </div>
+
+      <!-- ① VARIÁVEL ─────────────────────────────────── -->
+      <div class="block block--1">
+        <div class="block-play">
+          <header class="block-head">
+            <span class="cn cn--1">1</span>
+            <h4>Variável</h4>
+            <span class="patt">signal → template</span>
+          </header>
+          <p class="block-tip">Um signal expõe seu valor sendo chamado como função no template.</p>
+          <div class="ctrl">
+            <label>Nome</label>
+            <input type="text" class="campo"
+                   [ngModel]="nome()" (ngModelChange)="nome.set($event)"
+                   placeholder="Digite um nome" />
+          </div>
+          <div class="result r--1">
+            <span class="arrow">→</span>
+            <span class="rval">{{ nome() || '…' }}</span>
+          </div>
+        </div>
+        <div class="block-code">
+          <div class="code-panel cp--ts">
+            <span class="code-badge badge-ts">TS</span>
+            <pre class="cl"><span class="ct-prop">nome</span> = <span class="ct-fn">signal</span>(<span class="ct-str">'<span class="ct-live--1">{{ nome() }}</span>'</span>);</pre>
+          </div>
+          <div class="code-sep"></div>
+          <div class="code-panel cp--html">
+            <span class="code-badge badge-html">HTML</span>
+            <pre class="cl"><span class="ct-tag">&lt;p&gt;</span><span class="ct-itp">{{'{{ nome() }}'}}</span><span class="ct-tag">&lt;/p&gt;</span></pre>
+            <pre class="cl ct-comment">&lt;!-- renderiza: "<span class="ct-live--1">{{ nome() }}</span>" --&gt;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② EXPRESSÃO ────────────────────────────────── -->
+      <div class="block block--2">
+        <div class="block-play">
+          <header class="block-head">
+            <span class="cn cn--2">2</span>
+            <h4>Expressão</h4>
+            <span class="patt">a() + b()</span>
+          </header>
+          <p class="block-tip">Operações JavaScript são avaliadas diretamente em {{'{{ }}'}}.</p>
+          <div class="ctrl ctrl--row">
+            <div class="ctrl-grp">
+              <label>A</label>
+              <input type="number" class="campo campo--n"
+                     [ngModel]="numA()" (ngModelChange)="numA.set(+$event)" />
+            </div>
+            <span class="op op--2">+</span>
+            <div class="ctrl-grp">
+              <label>B</label>
+              <input type="number" class="campo campo--n"
+                     [ngModel]="numB()" (ngModelChange)="numB.set(+$event)" />
+            </div>
+          </div>
+          <div class="result r--2">
+            <span class="arrow">→</span>
+            <span class="rval">{{ soma() }}</span>
+          </div>
+        </div>
+        <div class="block-code">
+          <div class="code-panel cp--ts">
+            <span class="code-badge badge-ts">TS</span>
+            <pre class="cl"><span class="ct-prop">a</span>    = <span class="ct-fn">signal</span>(<span class="ct-num ct-live--2">{{ numA() }}</span>);</pre>
+            <pre class="cl"><span class="ct-prop">b</span>    = <span class="ct-fn">signal</span>(<span class="ct-num ct-live--2">{{ numB() }}</span>);</pre>
+            <pre class="cl"><span class="ct-prop">soma</span> = <span class="ct-fn">computed</span>(() => <span class="ct-kw">this</span>.<span class="ct-prop">a</span>() + <span class="ct-kw">this</span>.<span class="ct-prop">b</span>()); <span class="ct-comment">// = <span class="ct-live--2">{{ soma() }}</span></span></pre>
+          </div>
+          <div class="code-sep"></div>
+          <div class="code-panel cp--html">
+            <span class="code-badge badge-html">HTML</span>
+            <pre class="cl"><span class="ct-tag">&lt;p&gt;</span><span class="ct-itp">{{'{{ a() + b() }}'}}</span><span class="ct-tag">&lt;/p&gt;</span></pre>
+            <pre class="cl ct-comment">&lt;!-- renderiza: <span class="ct-live--2">{{ soma() }}</span> --&gt;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ MÉTODO ────────────────────────────────────── -->
+      <div class="block block--3">
+        <div class="block-play">
+          <header class="block-head">
+            <span class="cn cn--3">3</span>
+            <h4>Método</h4>
+            <span class="patt">texto().método()</span>
+          </header>
+          <p class="block-tip">Métodos JavaScript podem ser chamados diretamente no template.</p>
+          <div class="ctrl">
+            <label>Texto</label>
+            <input type="text" class="campo"
+                   [ngModel]="texto()" (ngModelChange)="texto.set($event)"
+                   placeholder="angular" />
+          </div>
+          <div class="result result--rows r--3">
+            <div class="rrow">
+              <span class="rmeth">.toUpperCase()</span>
+              <span class="rval">{{ texto().toUpperCase() || '…' }}</span>
+            </div>
+            <div class="rrow">
+              <span class="rmeth">.length</span>
+              <span class="rval">{{ texto().length }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="block-code">
+          <div class="code-panel cp--ts">
+            <span class="code-badge badge-ts">TS</span>
+            <pre class="cl"><span class="ct-prop">texto</span> = <span class="ct-fn">signal</span>(<span class="ct-str">'<span class="ct-live--3">{{ texto() }}</span>'</span>);</pre>
+          </div>
+          <div class="code-sep"></div>
+          <div class="code-panel cp--html">
+            <span class="code-badge badge-html">HTML</span>
+            <pre class="cl"><span class="ct-tag">&lt;p&gt;</span><span class="ct-itp">{{'{{ texto().toUpperCase() }}'}}</span><span class="ct-tag">&lt;/p&gt;</span></pre>
+            <pre class="cl ct-comment">&lt;!-- "<span class="ct-live--3">{{ texto().toUpperCase() || '…' }}</span>" --&gt;</pre>
+            <pre class="cl cl-gap"></pre>
+            <pre class="cl"><span class="ct-tag">&lt;p&gt;</span><span class="ct-itp">{{'{{ texto().length }}'}}</span><span class="ct-tag">&lt;/p&gt;</span></pre>
+            <pre class="cl ct-comment">&lt;!-- <span class="ct-live--3">{{ texto().length }}</span> --&gt;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ TERNÁRIO ──────────────────────────────────── -->
+      <div class="block block--4">
+        <div class="block-play">
+          <header class="block-head">
+            <span class="cn cn--4">4</span>
+            <h4>Ternário</h4>
+            <span class="patt">a ? 'X' : 'Y'</span>
+          </header>
+          <p class="block-tip">Expressão condicional inline para alternar texto sem diretivas.</p>
+          <div class="ctrl ctrl--toggle">
+            <label class="toggle">
+              <input type="checkbox" class="toggle-chk"
+                     [ngModel]="ativo()" (ngModelChange)="ativo.set($event)" />
+              <span class="toggle-track" [class.is-on]="ativo()">
+                <span class="toggle-knob"></span>
+              </span>
+              <span class="toggle-label">{{ ativo() ? 'Ligado' : 'Desligado' }}</span>
+            </label>
+          </div>
+          <div class="result r--4">
+            <span class="arrow">→</span>
+            <span class="rval" [class.rval--ok]="ativo()" [class.rval--no]="!ativo()">
+              {{ ativo() ? 'Ativo ✓' : 'Inativo ✗' }}
+            </span>
+          </div>
+        </div>
+        <div class="block-code">
+          <div class="code-panel cp--ts">
+            <span class="code-badge badge-ts">TS</span>
+            <pre class="cl"><span class="ct-prop">ativo</span> = <span class="ct-fn">signal</span>(<span class="ct-num ct-live--4">{{ ativo() }}</span>);</pre>
+          </div>
+          <div class="code-sep"></div>
+          <div class="code-panel cp--html">
+            <span class="code-badge badge-html">HTML</span>
+            <pre class="cl"><span class="ct-tag">&lt;p&gt;</span></pre>
+            <pre class="cl">&nbsp;&nbsp;<span class="ct-itp">{{"{{ ativo() ? 'Ativo ✓' : 'Inativo ✗' }}"}}</span></pre>
+            <pre class="cl"><span class="ct-tag">&lt;/p&gt;</span></pre>
+            <pre class="cl ct-comment">&lt;!-- "<span class="ct-live--4">{{ ativo() ? 'Ativo ✓' : 'Inativo ✗' }}</span>" --&gt;</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  

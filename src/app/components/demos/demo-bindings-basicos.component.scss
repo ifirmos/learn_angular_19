@@ -1,0 +1,42 @@
+
+      :host {
+        display: block;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .card-escuro ::ng-deep .p-card {
+        background: #0b1220;
+        border: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      .campo {
+        display: grid;
+        gap: 0.35rem;
+        margin-bottom: 0.75rem;
+      }
+
+      label {
+        font-weight: 600;
+        color: #cbd5e1;
+      }
+
+      .valor-slider {
+        color: #cbd5e1;
+      }
+
+      .preview {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .dica {
+        color: #cbd5e1;
+        margin: 0;
+      }
+    

@@ -1,0 +1,260 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Shared base for all interactive demo components
+// Usage: @use 'app/shared/styles/demo-base' as *;
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── 4-column responsive grid ─────────────────────────────────────────────────
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 500px)  { grid-template-columns: 1fr; }
+}
+
+// ── Card ─────────────────────────────────────────────────────────────────────
+.demo-card {
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--color-bg-surface-alt);
+  border-left: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.dc--1 { border-left-color: var(--color-accent-primary); }
+.dc--2 { border-left-color: var(--color-state-success); }
+.dc--3 { border-left-color: var(--color-state-warning); }
+.dc--4 { border-left-color: var(--color-state-info); }
+
+// ── Card header ───────────────────────────────────────────────────────────────
+.dc-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.dc-name {
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.dc-hint {
+  font-family: var(--font-family-mono);
+  font-size: 10.5px;
+  color: var(--color-text-muted);
+  margin-left: auto;
+}
+
+// ── Result box ────────────────────────────────────────────────────────────────
+.dc-result {
+  padding: 0.5rem 0.65rem;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+// ── Row ───────────────────────────────────────────────────────────────────────
+.rrow { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.rlabel { font-family: var(--font-family-mono); font-size: 11.5px; color: var(--color-text-secondary); }
+.arrow  { color: var(--color-text-muted); font-size: 12px; }
+
+.rval {
+  font-family: var(--font-family-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.dc--1 .rval { color: var(--color-accent-primary); }
+.dc--2 .rval { color: var(--color-state-success); }
+.dc--3 .rval { color: var(--color-state-warning); }
+.dc--4 .rval { color: var(--color-state-info); }
+
+// ── Pills ─────────────────────────────────────────────────────────────────────
+.pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill--src  { background: rgba(255, 255, 255, 0.06); color: var(--color-text-secondary); }
+.pill--keep { background: rgba(34, 211, 238, 0.12);  color: var(--color-accent-primary); }
+.pill--out  { background: rgba(239, 68, 68, 0.08); color: var(--color-state-error); text-decoration: line-through; opacity: 0.5; }
+
+.dc--2 .pill--keep { background: rgba(34, 197, 94, 0.12);  color: var(--color-state-success); }
+.dc--3 .pill--keep { background: rgba(249, 115, 22, 0.12); color: var(--color-state-warning); }
+.dc--4 .pill--keep { background: rgba(59, 130, 246, 0.12); color: var(--color-state-info); }
+
+// ── Input ─────────────────────────────────────────────────────────────────────
+.campo {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 8px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
+  font-family: var(--font-family-sans);
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px var(--color-accent-primary-10);
+  }
+}
+
+.campo--sm  { width: 72px; text-align: center; }
+.campo--xs  { width: 52px; text-align: center; }
+
+// ── Control row ───────────────────────────────────────────────────────────────
+.ctrl-row  { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.ctrl-label { font-size: 12px; color: var(--color-text-secondary); white-space: nowrap; }
+
+// ── Button ────────────────────────────────────────────────────────────────────
+.btn {
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover { border-color: var(--color-accent-primary); color: var(--color-accent-primary); }
+}
+
+.btn--sm     { padding: 3px 8px; font-size: 11px; }
+.btn--danger { border-color: var(--color-state-error); color: var(--color-state-error); &:hover { background: rgba(239, 68, 68, 0.1); } }
+.btn--ok     { border-color: var(--color-state-success); color: var(--color-state-success); &:hover { background: rgba(34, 197, 94, 0.1); } }
+
+// ── Slider ────────────────────────────────────────────────────────────────────
+.slider { flex: 1; accent-color: var(--color-accent-primary); cursor: pointer; }
+
+// ── Segmented buttons ─────────────────────────────────────────────────────────
+.seg-group { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+
+.seg {
+  padding: 3px 8px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: 5px;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover { border-color: var(--color-accent-primary); color: var(--color-accent-primary); }
+  &.seg--on { background: rgba(34, 211, 238, 0.12); border-color: var(--color-accent-primary); color: var(--color-accent-primary); }
+}
+
+// ── Toggle ────────────────────────────────────────────────────────────────────
+.toggle-wrap  { display: flex; align-items: center; gap: 0.65rem; }
+.toggle-label { display: flex; align-items: center; cursor: pointer; }
+.toggle-chk   { display: none; }
+
+.toggle-track {
+  width: 42px; height: 22px;
+  border-radius: 11px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+
+  &.is-on { background: var(--color-accent-primary); border-color: var(--color-accent-primary); }
+}
+
+.toggle-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%; background: #fff;
+  transition: transform 0.2s;
+  .is-on & { transform: translateX(20px); }
+}
+
+.toggle-val {
+  font-family: var(--font-family-mono); font-size: 13px; font-weight: 600;
+  color: var(--color-text-muted);
+  &.is-on { color: var(--color-accent-primary); }
+}
+
+// ── Circle badge ──────────────────────────────────────────────────────────────
+.cn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+
+.cn--1 { background: rgba(34, 211, 238, 0.15); color: var(--color-accent-primary); }
+.cn--2 { background: rgba(34, 197, 94, 0.15);  color: var(--color-state-success); }
+.cn--3 { background: rgba(249, 115, 22, 0.15); color: var(--color-state-warning); }
+.cn--4 { background: rgba(59, 130, 246, 0.15); color: var(--color-state-info); }
+
+// ── Tags ─────────────────────────────────────────────────────────────────────
+.tag {
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
+}
+
+.tag--cyan   { background: rgba(34, 211, 238, 0.15); color: var(--color-accent-primary); }
+.tag--green  { background: rgba(34, 197, 94, 0.15);  color: var(--color-state-success); }
+.tag--orange { background: rgba(249, 115, 22, 0.15); color: var(--color-state-warning); }
+.tag--blue   { background: rgba(59, 130, 246, 0.15); color: var(--color-state-info); }
+.tag--red    { background: rgba(239, 68, 68, 0.15);  color: var(--color-state-error); }
+
+// ── Tip box ───────────────────────────────────────────────────────────────────
+.tip {
+  font-size: 11.5px; color: var(--color-text-muted);
+  padding: 0.35rem 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px; line-height: 1.45;
+}
+
+// ── Step / sub-label ──────────────────────────────────────────────────────────
+.step-label {
+  font-size: 11px; color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.4px;
+  font-family: var(--font-family-mono);
+}
+
+// ── Mono display line ─────────────────────────────────────────────────────────
+.mono-line {
+  display: block;
+  font-family: var(--font-family-mono); font-size: 12px;
+  color: var(--color-text-secondary); white-space: pre; line-height: 1.6;
+}
+
+// ── Log list (for effects demo) ───────────────────────────────────────────────
+.log-list {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  max-height: 120px; overflow-y: auto;
+}
+
+.log-item {
+  font-family: var(--font-family-mono); font-size: 11px;
+  color: var(--color-state-success); padding: 1px 0;
+
+  &:first-child { color: var(--color-accent-primary); }
+}
+
+.log-empty { font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-muted); font-style: italic; }

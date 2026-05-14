@@ -1,5 +1,5 @@
 /**
- * Design System - Plataforma Educacional Angular 19
+ * Design System - Plataforma Educacional Angular 21
  * 
  * Sistema de temas completo com 3 variantes:
  * - Midnight Neon (dark, padrão)

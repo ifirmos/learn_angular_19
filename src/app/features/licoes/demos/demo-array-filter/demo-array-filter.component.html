@@ -1,0 +1,108 @@
+<div class="demo-grid">
+
+  <!-- 1. Filtrar números por threshold -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">nums.filter(n => n >= limiar)</code>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Limiar:</span>
+      <input class="campo campo--sm" type="number" min="0" max="90"
+             [ngModel]="limiar()" (ngModelChange)="limiar.set($event)">
+      <span class="rval" style="color:var(--color-accent-primary)">{{ limiar() }}</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="rlabel">original:</span>
+        <div class="pills">
+          @for (n of BASE_NUMS; track n) {
+            <span class="pill" [class.pill--keep]="n >= limiar()" [class.pill--out]="n < limiar()">{{ n }}</span>
+          }
+        </div>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">filtrado:</span>
+        <span class="rval">{{ numsFiltrados().length }} itens</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Filtrar strings por prefixo -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">palavras.filter(s => s.startsWith(p))</code>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Prefixo:</span>
+      <input class="campo campo--xs" maxlength="3"
+             [ngModel]="prefixo()" (ngModelChange)="prefixo.set($event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">todas:</span>
+        <div class="pills">
+          @for (p of PALAVRAS; track p) {
+            <span class="pill" [class.pill--keep]="p.startsWith(prefixo())" [class.pill--out]="!p.startsWith(prefixo())">{{ p }}</span>
+          }
+        </div>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">match:</span>
+        <span class="rval">{{ palavrasFiltradas().length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Filtrar objetos por preço -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">produtos.filter(p => p.preco &lt;= max)</code>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Max: R${{ maxPreco() }}</span>
+      <input class="slider" type="range" min="40" max="220" step="10"
+             [ngModel]="maxPreco()" (ngModelChange)="maxPreco.set($event)">
+    </div>
+    <div class="dc-result">
+      @for (prod of PRODUTOS; track prod.nome) {
+        <div class="rrow">
+          <span class="tag" [class.tag--orange]="prod.preco > maxPreco()" [class.tag--green]="prod.preco <= maxPreco()">
+            {{ prod.preco <= maxPreco() ? '✓' : '✗' }}
+          </span>
+          <span class="rlabel">{{ prod.nome }}</span>
+          <span class="rval" style="margin-left:auto">R${{ prod.preco }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- 4. map vs filter -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">map vs filter</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="tag tag--blue">map</span><span class="rlabel">mesmo tamanho, valores transformados</span></div>
+      <div class="rrow">
+        <div class="pills">
+          @for (n of [1,2,3,4,5]; track n) {
+            <span class="pill pill--keep">{{ n * 2 }}</span>
+          }
+        </div>
+      </div>
+      <div class="rrow"><span class="tag tag--orange">filter</span><span class="rlabel">tamanho &le; original, valores preservados</span></div>
+      <div class="rrow">
+        <div class="pills">
+          @for (n of [1,2,3,4,5]; track n) {
+            <span class="pill" [class.pill--keep]="n % 2 === 0" [class.pill--out]="n % 2 !== 0">{{ n }}</span>
+          }
+        </div>
+      </div>
+    </div>
+    <p class="tip">filter nunca cria elementos novos — só decide quais manter.</p>
+  </div>
+
+</div>

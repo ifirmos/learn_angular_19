@@ -1,0 +1,24 @@
+@use 'app/shared/styles/demo-base' as *;
+
+// ── filho simulado ────────────────────────────────────────────────────────────
+.filho-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  border: 1px dashed var(--color-border-default);
+}
+
+.filho-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.filho-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}

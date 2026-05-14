@@ -1,0 +1,96 @@
+<div class="demo-grid">
+
+  <!-- 1. Effect rastreia tema -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">effect(() =&gt; ...)</code>
+      <span class="dc-hint">rastreio reativo</span>
+    </div>
+    <div class="toggle-wrap">
+      <label class="toggle-label">
+        <input class="toggle-chk" type="checkbox"
+               [ngModel]="tema() === 'dark'" (ngModelChange)="tema.set($event ? 'dark' : 'light')">
+        <div class="toggle-track" [class.is-on]="tema() === 'dark'">
+          <div class="toggle-knob"></div>
+        </div>
+      </label>
+      <span class="toggle-val" [class.is-on]="tema() === 'dark'">{{ tema() }}</span>
+    </div>
+    <div class="dc-result">
+      <div class="step-label">log do effect</div>
+      <div class="log-list">
+        @for (entry of logTema(); track $index) {
+          <span class="log-item">{{ entry }}</span>
+        } @empty {
+          <span class="log-empty">Aguardando mudanças…</span>
+        }
+      </div>
+    </div>
+    <p class="tip">O effect executou <strong>{{ execCount() }}×</strong>.</p>
+  </div>
+
+  <!-- 2. Effect rastreia volume -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">múltiplos effects</code>
+      <span class="dc-hint">um por responsabilidade</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Volume: {{ volume() }}%</span>
+      <input class="slider" type="range" min="0" max="100"
+             [ngModel]="volume()" (ngModelChange)="volume.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="step-label">log do volume</div>
+      <div class="log-list">
+        @for (entry of logVolume(); track $index) {
+          <span class="log-item" style="color:var(--color-state-success)">{{ entry }}</span>
+        } @empty {
+          <span class="log-empty">Mova o slider…</span>
+        }
+      </div>
+    </div>
+    <p class="tip">Cada effect tem uma responsabilidade única — evita acoplamento.</p>
+  </div>
+
+  <!-- 3. untracked() -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">untracked()</code>
+      <span class="dc-hint">ler sem dependência</span>
+    </div>
+    <div class="dc-result">
+      <div class="mono-line">effect(() =&gt; &#123;</div>
+      <div class="rrow">
+        <span class="tag tag--cyan">rastreado</span>
+        <span class="rlabel">const t = tema();</span>
+      </div>
+      <div class="rrow">
+        <span class="tag tag--orange">não rastreado</span>
+        <span class="rlabel">const v = untracked(() =&gt; volume());</span>
+      </div>
+      <div class="mono-line">&#125;);</div>
+    </div>
+    <p class="tip"><code>untracked()</code> lê um signal sem criar dependência. O effect não re-executa quando esse signal muda.</p>
+  </div>
+
+  <!-- 4. Regras de uso -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">quando usar effect()</code>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="tag tag--green">✓</span><span class="rlabel">sincronizar com localStorage</span></div>
+      <div class="rrow"><span class="tag tag--green">✓</span><span class="rlabel">acionar analytics / logs</span></div>
+      <div class="rrow"><span class="tag tag--green">✓</span><span class="rlabel">manipular DOM externo (Canvas, charts)</span></div>
+      <div class="rrow"><span class="tag tag--red">✗</span><span class="rlabel">derivar valores → use <code>computed()</code></span></div>
+      <div class="rrow"><span class="tag tag--red">✗</span><span class="rlabel">escrever em signals dentro do effect</span></div>
+    </div>
+    <p class="tip">Regra: <code>effect()</code> é para <em>side effects externos</em>, não para lógica de estado.</p>
+  </div>
+
+</div>

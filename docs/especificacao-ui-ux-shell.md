@@ -78,8 +78,9 @@ Dividir o header em três zonas:
 
 **Zona esquerda – Brand**
 
-*   Logotipo simplificado da plataforma (ex.: ícone Angular estilizado + “Learn Angular 19”).
-*   Título curto: “Plataforma Educacional Angular 19”.
+*   Logoótipo simplificado da plataforma (ex.: ícone Angular estilizado + "Learn Angular 21").
+    *   Use `<img ngSrc="..." width="X" height="Y" />` com `NgOptimizedImage` (import de `@angular/common`) para o logotipo e quaisquer assets estáticos do header — não use `src` diretamente em imagens estáticas.
+*   Título curto: "Plataforma Educacional Angular 21".
 *   Este título substitui o texto solto que hoje aparece no topo da tela.
 
 **Zona central – Navegação principal**
@@ -261,7 +262,7 @@ Duas faixas empilhadas (podem se adaptar para colunas em desktop):
 **Faixa inferior – Meta informações**
 
 *   **Lado esquerdo:**
-    *   “© Ano – Plataforma Educacional Angular 19”.
+    *   "© Ano – Plataforma Educacional Angular 21".
     *   Pequena tagline: “Feito para devs que vivem Angular”.
 *   **Lado direito:**
     *   Ícone Angular discreto.
@@ -277,6 +278,17 @@ Duas faixas empilhadas (podem se adaptar para colunas em desktop):
     *   Padding vertical generoso, alinhado ao padrão da tela.
 
 ## 7. Animações, transições e microinterações
+
+### 7.0. Animações no PrimeNG 21
+
+O PrimeNG 21 usa **animações CSS nativas** (sem `provideAnimations`). Personalizar durações e easings sobrescrevendo as classes:
+
+* `.p-anchored-overlay-enter-active` / `.p-anchored-overlay-leave-active` (dropdowns, popovers)
+* `.p-collapsible-enter-active` / `.p-collapsible-leave-active` (Accordion, Panel)
+* `.p-dialog-enter-active` / `.p-dialog-leave-active` (Dialog)
+* `.p-drawer-enter-active` / `.p-drawer-leave-active` (Drawer)
+
+Não use `showTransitionOptions` / `hideTransitionOptions` — deprecated no PrimeNG v21.
 
 ### 7.1. Princípios gerais
 
@@ -319,6 +331,8 @@ Duas faixas empilhadas (podem se adaptar para colunas em desktop):
 
 ## 9. Integração com a arquitetura Angular do projeto
 
+> **Dark mode (PrimeNG 21)**: o alternador de tema deve operar via `providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } })`. Para ativar/desativar: `document.querySelector('html')!.classList.toggle('app-dark')`. O `ThemeService` do projeto é o ponto central para essa lógica.
+
 ### 9.1. Pontos de acoplamento principais
 
 **AppShell**
@@ -337,6 +351,7 @@ Responsável por:
 **Tema**
 `src/app/core/services/theme.service.ts` + `src/app/shared/theme/theme-tokens.ts`:
 *   Header e rail devem consumir tokens de tema via `ThemeService` ou CSS variables, não hardcode.
+*   Para dark mode, usar o selector `.app-dark` configurado no `providePrimeNG` (ver Seção 9 acima).
 
 **UI básica**
 `src/app/shared/ui/*`:
@@ -350,6 +365,8 @@ Responsável por:
 *   Qualquer novo componente visual criado para o shell (ex.: `HeaderShell`, `SideNavShell`, `FooterShell`) deve ir para:
     *   `src/app/core/layout/` (para layout global), ou
     *   `src/app/shared/components/` se tiver potencial de reuso fora do shell.
+
+> **`@defer`**: use `@defer (on viewport)` para subcomponentes do shell que não são visíveis no carregamento inicial (ex.: setor inferior do footer, painéis laterais em mobile).
 
 ## 10. Guia para o agente / implementador
 

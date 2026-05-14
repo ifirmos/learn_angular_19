@@ -1,5 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { TrilhasStore } from '../../../../core/services/trilhas-store.service';
 import { UiButtonComponent } from '../../../../shared/ui/ui-button/ui-button.component';
@@ -10,17 +9,10 @@ import type { Nivel } from '../../../../shared/components/badge-nivel/badge-nive
 
 type FiltroNivel = 'todos' | Nivel;
 
-/**
- * Dashboard Premium - Tela Inicial
- * 
- * Implementa hero narrativo, painel de progresso, e grid de trilhas
- * seguindo especificações de UX/UI do briefing.
- */
 @Component({
   selector: 'app-dashboard-trilhas',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     UiButtonComponent,
     MetricasRapidasComponent,
     ResumoProgressoComponent,

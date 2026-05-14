@@ -1,0 +1,101 @@
+<div class="demo-grid">
+
+  <!-- 1. signal() - criar e ler -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">signal(initialValue)</code>
+      <span class="dc-hint">criar + ler</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">const nome =</span>
+        <span class="tag tag--cyan">signal</span>
+        <span class="rval">'{{ nome() }}'</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">nome()</span>
+        <span class="arrow">→</span>
+        <span class="rval">'{{ nome() }}'</span>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo" [ngModel]="nome()" (ngModelChange)="nome.set($event)" placeholder="Digite um nome…">
+    </div>
+    <p class="tip">Sinais são invocados <code>()</code> para ler o valor. Em templates isso cria uma dependência reativa.</p>
+  </div>
+
+  <!-- 2. .set() -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">.set(novoValor)</code>
+      <span class="dc-hint">substituir</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">preco()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ preco() }}</span>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn" (click)="preco.set(50)">R$ 50</button>
+      <button class="btn" (click)="preco.set(100)">R$ 100</button>
+      <button class="btn" (click)="preco.set(200)">R$ 200</button>
+    </div>
+    <p class="tip"><code>.set()</code> substitui o valor completamente. Use quando você tem o valor final pronto.</p>
+  </div>
+
+  <!-- 3. .update() -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">.update(fn)</code>
+      <span class="dc-hint">transformar</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">contador()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ contador() }}</span>
+      </div>
+      <div class="rrow">
+        <div class="pills">
+          @for (h of historico(); track $index) {
+            <span class="pill pill--src">{{ h }}</span>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn btn--danger" (click)="decrement()">− 1</button>
+      <button class="btn btn--ok" (click)="increment()">+ 1</button>
+      <button class="btn" (click)="resetContador()">reset</button>
+    </div>
+    <p class="tip"><code>.update(v => v + 1)</code> recebe o valor atual e retorna o novo — ideal para incrementos/toggles.</p>
+  </div>
+
+  <!-- 4. computed() somente leitura -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">computed(() => expr)</code>
+      <span class="dc-hint">somente leitura</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">preco()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ preco() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">dobro()</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ dobro() }}</span>
+      </div>
+    </div>
+    <p class="tip"><code>computed()</code> retorna um <em>Signal</em> derivado e <strong>somente leitura</strong>. Recalcula automaticamente quando <code>preco()</code> muda.</p>
+  </div>
+
+</div>

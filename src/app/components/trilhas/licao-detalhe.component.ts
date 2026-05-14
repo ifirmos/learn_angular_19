@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -9,9 +8,9 @@ import { Trilha, Licao } from '../../models/trilha.model';
 import { DemoBindingsBasicosComponent } from '../demos/demo-bindings-basicos.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-licao-detalhe',
-  standalone: true,
-  imports: [CommonModule, RouterLink, CardModule, ButtonModule, TagModule, DemoBindingsBasicosComponent],
+  imports: [RouterLink, CardModule, ButtonModule, TagModule, DemoBindingsBasicosComponent],
   templateUrl: './licao-detalhe.component.html',
   styleUrls: ['./licao-detalhe.component.scss'],
 })

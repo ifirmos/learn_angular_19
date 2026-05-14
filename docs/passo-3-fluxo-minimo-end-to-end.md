@@ -104,15 +104,15 @@ Criar pasta:
 Arquivo: `demo-bindings-basicos.component.ts`
 
 ```ts
-import { Component, computed, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, signal, ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 
 @Component({
-  standalone: true,
   selector: 'app-demo-bindings-basicos',
-  imports: [CommonModule, InputTextModule, CardModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, InputTextModule, CardModule],
   template: `
     <div class="demo-bindings-basicos">
       <p-card header="Demo: Bindings Básicos">
@@ -353,7 +353,7 @@ import { TrilhasStore } from '../../services/trilhas-store.service';
   template: `
     <div class="app-shell">
       <header class="app-header">
-        <h1>Plataforma Educacional Angular 19</h1>
+        <h1>Plataforma Educacional Angular 21</h1>
       </header>
 
       <main class="app-main">

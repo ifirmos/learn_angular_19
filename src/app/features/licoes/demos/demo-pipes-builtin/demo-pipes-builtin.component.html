@@ -1,0 +1,110 @@
+<div class="demo-grid">
+
+  <!-- 1. date pipe -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">| date</code>
+      <span class="dc-hint">formatar datas</span>
+    </div>
+    <div class="dc-result">
+      @for (fmt of dataFormatos; track fmt) {
+        <div class="rrow">
+          <span class="rlabel" style="min-width:9rem">{{ fmt }}</span>
+          <span class="arrow">→</span>
+          <span class="rval">{{ data() | date: fmt : '' : 'pt-BR' }}</span>
+        </div>
+      }
+    </div>
+    <p class="tip"><code>| date:'formato':'timezone':'locale'</code> — locale <code>pt-BR</code> requer <code>registerLocaleData</code>.</p>
+  </div>
+
+  <!-- 2. currency pipe -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">| currency</code>
+      <span class="dc-hint">formatar moedas</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Valor:</span>
+      <input class="campo campo--sm" type="number" min="0"
+             [ngModel]="valor()" (ngModelChange)="valor.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">BRL</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ valor() | currency:'BRL':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">USD</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ valor() | currency:'USD' }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">EUR</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ valor() | currency:'EUR':'code' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. number / decimal pipe -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">| number</code>
+      <span class="dc-hint">casas decimais</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Número:</span>
+      <input class="campo campo--sm" type="number" step="0.001"
+             [ngModel]="numero()" (ngModelChange)="numero.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">'1.0-0'</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ numero() | number:'1.0-0' }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">'1.2-2'</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ numero() | number:'1.2-2' }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">'1.4-6'</span>
+        <span class="arrow">→</span>
+        <span class="rval">{{ numero() | number:'1.4-6' }}</span>
+      </div>
+    </div>
+    <p class="tip">Formato: <code>'minInt.minDec-maxDec'</code></p>
+  </div>
+
+  <!-- 4. text pipes -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">| uppercase / titlecase</code>
+      <span class="dc-hint">transformar texto</span>
+    </div>
+    <div class="ctrl-row">
+      <input class="campo" [ngModel]="texto()" (ngModelChange)="texto.set($event)" placeholder="Digite um texto…">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">uppercase</span>
+        <span class="arrow">→</span>
+        <span class="rval" style="font-size:11px">{{ texto() | uppercase }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">titlecase</span>
+        <span class="arrow">→</span>
+        <span class="rval" style="font-size:11px">{{ texto() | titlecase }}</span>
+      </div>
+    </div>
+    <p class="tip">Pipes são <strong>puros por padrão</strong>: só reexecutam quando o valor de entrada muda.</p>
+  </div>
+
+</div>

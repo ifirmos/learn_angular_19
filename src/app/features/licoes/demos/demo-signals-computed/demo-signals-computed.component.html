@@ -1,0 +1,101 @@
+<div class="demo-grid">
+
+  <!-- 1. Entrada: preço e quantidade -->
+  <div class="demo-card dc--1">
+    <div class="dc-head">
+      <span class="cn cn--1">1</span>
+      <code class="dc-name">computed() simples</code>
+      <span class="dc-hint">preco × qtd</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Preço:</span>
+      <input class="campo campo--sm" type="number" min="1"
+             [ngModel]="preco()" (ngModelChange)="preco.set(+$event)">
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Qtd:</span>
+      <input class="campo campo--xs" type="number" min="1" max="20"
+             [ngModel]="qtd()" (ngModelChange)="qtd.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">subtotal()</span>
+        <span class="arrow">→</span>
+        <span class="rval">R$ {{ subtotal() }}</span>
+      </div>
+    </div>
+    <p class="tip">computed recalcula quando qualquer signal lido muda.</p>
+  </div>
+
+  <!-- 2. Desconto encadeado -->
+  <div class="demo-card dc--2">
+    <div class="dc-head">
+      <span class="cn cn--2">2</span>
+      <code class="dc-name">computed encadeado</code>
+      <span class="dc-hint">desconto</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Desconto: {{ desconto() }}%</span>
+      <input class="slider" type="range" min="0" max="50" step="5"
+             [ngModel]="desconto()" (ngModelChange)="desconto.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">subtotal</span>
+        <span class="rval">R$ {{ subtotal() }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">−{{ desconto() }}%</span>
+        <span class="rval" style="color:var(--color-state-error)">−R$ {{ valorDesconto().toFixed(2) }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">total s/ frete</span>
+        <span class="rval">R$ {{ totalSemFrete().toFixed(2) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Frete + total final -->
+  <div class="demo-card dc--3">
+    <div class="dc-head">
+      <span class="cn cn--3">3</span>
+      <code class="dc-name">computed condicional</code>
+      <span class="dc-hint">frete + categoria</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Frete: R$ {{ frete() }}</span>
+      <input class="slider" type="range" min="0" max="60" step="5"
+             [ngModel]="frete()" (ngModelChange)="frete.set(+$event)">
+    </div>
+    <div class="dc-result">
+      <div class="rrow">
+        <span class="rlabel">total final</span>
+        <span class="rval">R$ {{ totalFinal().toFixed(2) }}</span>
+      </div>
+      <div class="rrow">
+        <span class="rlabel">categoria</span>
+        <span class="tag"
+          [class.tag--blue]="categoria() === 'Premium'"
+          [class.tag--green]="categoria() === 'Padrão'"
+          [class.tag--orange]="categoria() === 'Básico'">{{ categoria() }}</span>
+      </div>
+    </div>
+    <p class="tip">computed encadeado: totalFinal depende de totalSemFrete que depende de subtotal.</p>
+  </div>
+
+  <!-- 4. Lazy e memorizado -->
+  <div class="demo-card dc--4">
+    <div class="dc-head">
+      <span class="cn cn--4">4</span>
+      <code class="dc-name">lazy + memorizado</code>
+      <span class="dc-hint">performance</span>
+    </div>
+    <div class="dc-result">
+      <div class="rrow"><span class="tag tag--blue">lazy</span><span class="rlabel">só calcula quando lido</span></div>
+      <div class="rrow"><span class="tag tag--green">memo</span><span class="rlabel">mesmo resultado se signals não mudaram</span></div>
+      <div class="rrow"><span class="tag tag--cyan">chain</span><span class="rlabel">cada computed invalida os dependentes</span></div>
+    </div>
+    <p class="tip"><strong>Nunca</strong> use <code>effect()</code> para derivar valores — use <code>computed()</code>. É mais eficiente e sem side-effects.</p>
+  </div>
+
+</div>

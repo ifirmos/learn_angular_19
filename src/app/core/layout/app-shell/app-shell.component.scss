@@ -1,0 +1,21 @@
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: var(--color-bg-body);
+    }
+
+    .app-body {
+      display: flex;
+      flex: 1;
+      position: relative;
+    }
+
+    .app-main {
+      flex: 1;
+      width: 100%;
+      /* Garante que o conteúdo não estoure a largura em layouts flex */
+      min-width: 0; 
+    }
+  

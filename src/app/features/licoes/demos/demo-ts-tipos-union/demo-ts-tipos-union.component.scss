@@ -1,0 +1,174 @@
+@use 'app/shared/styles/demo-base' as *;
+
+// ── Layout 3 linhas: 2+2+1 → cards 1-4 span 3, card 5 span 6
+.ttu-grid {
+  grid-template-columns: repeat(6, 1fr);
+
+  .demo-card:nth-child(-n+4) { grid-column: span 3; }
+  .demo-card:nth-child(5)    { grid-column: span 6; }
+
+  // ── Redução de densidade global dos cards ───────────────────────────────
+  .demo-card { padding: .6rem; gap: .35rem; }
+  .tip        { padding: .2rem .4rem; }
+  .dc-head    { gap: .35rem; margin-bottom: .15rem; }
+}
+
+// ── Botões .seg locais com melhor contraste ───────────────────────────────────
+.seg {
+  color: var(--color-text-primary);
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+// ── Card 3: referência visual do tipo ────────────────────────────────────────
+.type-ref {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .25rem;
+  background: var(--color-surface-secondary, #1e2535);
+  border-radius: 6px;
+  padding: .3rem .55rem;
+  margin-bottom: .4rem;
+  font-family: var(--font-family-mono);
+  font-size: .75rem;
+  line-height: 1.5;
+}
+.type-kw   { color: #c792ea; }
+.type-lit  { color: var(--color-state-success); }
+.type-pipe { color: var(--color-text-tertiary, #64748b); margin: 0 .1rem; }
+.type-op   { color: var(--color-state-warning); }
+
+// ── Card 3: resultado de validade ─────────────────────────────────────────────
+.validity-result {
+  min-height: 3.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: .35rem;
+}
+.validity-idle {
+  color: var(--color-text-tertiary, #64748b);
+  font-style: italic;
+  font-size: .77rem;
+  padding: .3rem 0;
+}
+.validity-row {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .3rem .55rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  &.validity-ok  { background: color-mix(in srgb, var(--color-state-success) 10%, transparent); border-color: var(--color-state-success); }
+  &.validity-err { background: color-mix(in srgb, var(--color-state-error)   10%, transparent); border-color: var(--color-state-error); }
+}
+.validity-icon { font-weight: 700; font-size: .88rem; }
+.validity-val  { font-family: var(--font-family-mono); font-size: .79rem; color: var(--color-text-primary); }
+.validity-msg  { font-size: .73rem; color: var(--color-text-secondary, #94a3b8); margin-left: auto; }
+.code-sim {
+  font-family: var(--font-family-mono);
+  font-size: .74rem;
+  padding: .3rem .55rem;
+  border-radius: 6px;
+  line-height: 1.55;
+  background: var(--color-surface-secondary, #1e2535);
+  &--ok  { color: var(--color-state-success); }
+  &--err { color: var(--color-state-error); }
+}
+
+// ── Card 4: visualização da função opcional ───────────────────────────────────
+.opt-code {
+  font-family: var(--font-family-mono);
+  font-size: .75rem;
+  line-height: 1.6;
+  background: var(--color-surface-secondary, #1e2535);
+  border-radius: 7px;
+  padding: .45rem .65rem;
+  margin: .3rem 0;
+}
+.opt-line {
+  color: var(--color-text-tertiary, #64748b);
+  transition: color .2s, background .2s;
+  border-radius: 4px;
+  padding: 0 .2rem;
+}
+.opt-dim    { opacity: .5; }
+.opt-active {
+  color: var(--color-text-primary);
+  background: color-mix(in srgb, var(--color-accent-primary) 8%, transparent);
+}
+.opt-result {
+  margin-top: .25rem;
+  color: var(--color-state-success);
+  &--undef { color: var(--color-state-warning); }
+}
+
+// ── Card 5: layout 2 colunas ─────────────────────────────────────────────────
+.record-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+  margin-bottom: .25rem;
+  align-items: end;
+}
+
+.record-instr {
+  font-size: .71rem;
+  color: var(--color-text-tertiary, #64748b);
+  margin: 0 0 .35rem;
+  font-style: italic;
+}
+
+// ── Card 5: tabela Record<K, V> (sem barras) ──────────────────────────────────
+.record-table {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+  margin: .25rem 0;
+}
+
+.record-row {
+  display: grid;
+  grid-template-columns: 2rem .7rem 3.2rem 1rem;
+  align-items: center;
+  gap: .3rem;
+  padding: .14rem .4rem;
+  border-radius: 5px;
+  background: var(--color-surface-secondary, #1e2535);
+  border: 1px solid transparent;
+  transition: border-color .15s, background .15s;
+
+  &--active  { border-color: var(--color-accent-primary); background: color-mix(in srgb, var(--color-accent-primary) 10%, transparent); }
+  &--missing { opacity: .4; }
+}
+
+.record-key {
+  font-family: var(--font-family-mono);
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--color-accent-primary);
+  text-align: center;
+}
+.record-arrow { color: var(--color-text-tertiary, #64748b); font-size: .7rem; }
+.record-val   { font-family: var(--font-family-mono); font-size: .75rem; color: var(--color-text-primary); text-align: right; }
+.ri {
+  font-size: .8rem; font-weight: 700; text-align: center;
+  color: var(--color-state-error);
+  &--ok { color: var(--color-state-success); }
+}
+
+// ── Card 5: painel de código simulado ────────────────────────────────────────
+.record-code {
+  background: var(--color-surface-secondary, #1e2535);
+  border-radius: 7px;
+  padding: .4rem .55rem;
+  font-family: var(--font-family-mono);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+
+.rcode-ok     { color: var(--color-state-success); }
+.rcode-err    { color: var(--color-state-error); }
+.rcode-strike { text-decoration: line-through; opacity: .7; }
+.hint-idle    { opacity: .55; font-style: italic; }

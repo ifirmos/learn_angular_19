@@ -10,7 +10,7 @@ Colocar a aplicação para subir com:
 * Providers globais essenciais configurados:
 
   * Router (`provideRouter`),
-  * Animações (`provideAnimations`),
+  * PrimeNG com tema (`providePrimeNG`),
   * HTTP (`provideHttpClient`),
   * DataSource de trilhas (`TrilhasDataSource` → `TrilhasStaticDataSource`),
   * Repositório de progresso (`ProgressRepository` → `LocalStorageProgressRepository`),
@@ -96,7 +96,8 @@ Arquivo: `src/app/core/config/app.config.ts`
 import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 import { appRoutes } from '../../routing/app.routes';
 
@@ -113,8 +114,8 @@ export const appConfig: ApplicationConfig = {
     // Router com suporte a binding de inputs a partir da rota
     provideRouter(appRoutes, withComponentInputBinding()),
 
-    // Animações (necessárias para boa parte do PrimeNG)
-    provideAnimations(),
+    // PrimeNG 21 – tema Aura (não adicionar provideAnimations: PrimeNG 21 usa CSS nativo)
+    providePrimeNG({ theme: { preset: Aura } }),
 
     // HTTP Client
     provideHttpClient(),
@@ -196,7 +197,6 @@ Se qualquer um desses componentes não existir nos caminhos indicados, há duas 
      import { Component } from '@angular/core';
 
      @Component({
-       standalone: true,
        selector: 'app-dashboard-trilhas',
        template: `<p>Dashboard Trilhas (placeholder)</p>`,
      })
@@ -298,7 +298,7 @@ Arquivo: `src/app/core/data-access/local-storage-progress.repository.ts`
 import { Injectable } from '@angular/core';
 import { ProgressRepository } from './progress.repository';
 
-const STORAGE_KEY = 'learn-angular19-progress';
+const STORAGE_KEY = 'learn-angular21-progress';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageProgressRepository implements ProgressRepository {
@@ -370,13 +370,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  standalone: true,
   selector: 'app-shell',
   imports: [RouterOutlet],
   template: `
     <div class="app-shell">
       <header class="app-header">
-        <h1>Plataforma Educacional Angular 19</h1>
+        <h1>Plataforma Educacional Angular 21</h1>
       </header>
 
       <main class="app-main">
